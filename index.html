@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manifesto for Operator-Led Software Development</title>
+<meta name="description" content="Operator-Led Software Development: a way of building software in which a human operator sets intent, grants bounded authority to AI agents, judges the evidence, and accepts the outcome. AI agents may do the work; the operator remains accountable for every change accepted into the codebase.">
+<meta property="og:title" content="Manifesto for Operator-Led Software Development">
+<meta property="og:description" content="A human operator sets intent, grants bounded authority to AI agents, judges the evidence, and accepts the outcome. AI agents may do the work; the operator remains accountable for every change accepted into the codebase. Nothing closes without the operator's verdict.">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Poppins:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f7f4ee; --card:#fffdf9; --ink:#1b1b1f; --muted:#5c5a56; --faint:#8e8a83;
+    --rule:#e3ded4; --rule-soft:#ece8e0; --accent:#8b2e1f; --accent-ink:#6f2418; --accent-soft:#f6e9e4;
+    --mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#15151a; --card:#1c1c22; --ink:#ece8df; --muted:#aaa59b; --faint:#77736b;
+      --rule:#2c2c34; --rule-soft:#232329; --accent:#e0846f; --accent-ink:#eea08f; --accent-soft:#2a1d1a;
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.7;
+    -webkit-font-smoothing:antialiased}
+  h1,h2,h3,.serif{font-family:"Fraunces","Iowan Old Style","Palatino Linotype",Georgia,serif;font-variation-settings:"opsz" 72}
+  a{color:var(--accent-ink);text-decoration-thickness:1px;text-underline-offset:3px}
+  a:hover{color:var(--accent)}
+  .wrap{width:min(46rem,calc(100% - 2.5rem));margin:0 auto}
+
+  /* ── top bar ── */
+  .bar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 88%,transparent);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--rule)}
+  /* The bar spans wider than the reading column so brand, six links and the version chip sit on one line. */
+  .bar .wrap{width:min(72rem,calc(100% - 2.5rem));display:flex;align-items:center;justify-content:space-between;gap:1.5rem;height:54px;flex-wrap:nowrap}
+  .brand{font-family:"Fraunces","Iowan Old Style","Palatino Linotype",Georgia,serif;font-variation-settings:"opsz" 72;font-weight:700;font-size:1.15rem;letter-spacing:-.01em;color:var(--ink);text-decoration:none;white-space:nowrap}
+  .brand b{color:var(--accent)}
+  .links{display:flex;gap:1.25rem;font-size:.8rem;font-weight:500;flex-wrap:nowrap;overflow:hidden}
+  .links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+  .links a:hover{color:var(--accent)}
+  .ver{font-family:var(--mono);font-size:.7rem;color:var(--faint);white-space:nowrap}
+  @media (max-width:900px){.links a:nth-child(n+5){display:none}}
+  @media (max-width:720px){.links{display:none}}
+
+  /* ── hero ── */
+  header.hero{padding:4.5rem 0 3.2rem;border-bottom:1px solid var(--rule)}
+  header.hero::before{content:"";display:block;width:3.25rem;height:3px;background:var(--accent);margin-bottom:1.5rem;border-radius:2px}
+  .kicker{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 1rem}
+  h1{font-size:clamp(2.4rem,5.6vw,4rem);line-height:1.04;font-weight:600;letter-spacing:-.022em;margin:0 0 1.5rem}
+
+  /* ── rhythm: numbered sections, wide structural blocks, full-bleed bands ── */
+  body{counter-reset:sec}
+  section{counter-increment:sec}
+  /* Section numerals: serif, in the accent, no leading zero. Above the heading on narrow screens; hanging in the
+     left margin once there is room for it. */
+  section > h2{position:relative}
+  section > h2::before{content:counter(sec);display:block;font-family:"Fraunces","Iowan Old Style","Palatino Linotype",Georgia,serif;font-variation-settings:"opsz" 72;font-size:1.6rem;line-height:1;font-weight:600;color:var(--accent);margin-bottom:.55rem}
+  @media (min-width:1180px){
+    section > h2::before{position:absolute;left:-3.6rem;top:.3rem;margin:0;width:2.6rem;text-align:right;font-size:1.9rem}
+  }
+  /* Centered via left/transform (not margin) so a block's own margin shorthand can't undo it. */
+  .breakout{position:relative;width:min(60rem,calc(100vw - 2.5rem));left:50%;transform:translateX(-50%)}
+  section.band{background:var(--card);box-shadow:0 0 0 100vmax var(--card);clip-path:inset(0 -100vmax);border-bottom:1px solid var(--rule)}
+  .definition{font-family:"Fraunces","Iowan Old Style","Palatino Linotype",Georgia,serif;font-variation-settings:"opsz" 72;font-size:clamp(1.15rem,2.2vw,1.45rem);line-height:1.45;color:var(--ink);margin:0 0 1.6rem;max-width:40rem}
+  .definition strong{font-weight:600}
+  .stance{border-left:3px solid var(--accent);padding:.7rem 1.1rem;background:var(--accent-soft);border-radius:0 6px 6px 0;
+    font-size:1rem;margin:0 0 1.8rem;max-width:40rem}
+  .stance em{color:var(--muted)}
+  .pull{font-family:"Fraunces","Iowan Old Style","Palatino Linotype",Georgia,serif;font-variation-settings:"opsz" 72;
+    font-size:clamp(1.25rem,2.2vw,1.55rem);line-height:1.35;font-weight:500;color:var(--accent-ink);
+    margin:1.4rem 0 1.6rem;padding-left:1.1rem;border-left:3px solid var(--accent);max-width:38rem}
+  .bets{margin:1.6rem 0 .4rem;padding:1.1rem 1.3rem;background:var(--card);border:1px solid var(--rule);border-left:3px solid var(--accent);border-radius:0 8px 8px 0}
+  .bets .k{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem}
+  .bets p{margin:.5rem 0;font-size:.97rem}
+  .bets p strong{color:var(--ink)}
+  .byline{display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;font-size:.86rem;color:var(--muted)}
+  .byline span b{color:var(--ink);font-weight:600}
+
+  /* ── sections ── */
+  section{padding:3.8rem 0;border-bottom:1px solid var(--rule-soft)}
+  section:last-of-type{border-bottom:0}
+  h2{font-size:clamp(1.5rem,3vw,2rem);line-height:1.15;font-weight:600;letter-spacing:-.015em;margin:0 0 1rem}
+  h3{font-size:1.15rem;font-weight:600;margin:1.8rem 0 .5rem}
+  p{margin:.65rem 0}
+  .lede{font-size:1.05rem;color:var(--muted)}
+  .lede strong{color:var(--ink);font-weight:600}
+  ul,ol{margin:.5rem 0;padding-left:1.35rem}
+  li{margin:.35rem 0}
+  .note{margin:1.4rem 0;padding:.9rem 1.1rem;border-left:3px solid var(--faint);background:var(--card);border:1px solid var(--rule);border-left-width:3px;border-radius:0 6px 6px 0;font-size:.92rem;color:var(--muted)}
+  .note strong{color:var(--ink)}
+  code{font-family:var(--mono);font-size:.86em;background:var(--rule-soft);padding:.08em .35em;border-radius:3px}
+
+  /* ── values ── */
+  .values{list-style:none;padding:0;margin:1.2rem 0 0;border-top:1px solid var(--rule)}
+  .values li{display:grid;grid-template-columns:1fr auto 1fr;gap:.6rem 1.2rem;align-items:baseline;
+    padding:.85rem 0;border-bottom:1px solid var(--rule);margin:0;font-family:"Fraunces","Iowan Old Style","Palatino Linotype",Georgia,serif;font-variation-settings:"opsz" 72;font-size:1.2rem}
+  .values li .l{font-weight:600;text-align:right}
+  .values li .o{font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+  .values li .r{color:var(--muted)}
+  @media (max-width:560px){
+    .values li{display:block;text-align:left;font-size:1.05rem;line-height:1.5}
+    .values li .l{text-align:left}
+    .values li .o{display:inline;margin:0 .4rem}
+  }
+
+  /* ── principles ── */
+  .principles{list-style:none;padding:0;margin:1.2rem 0 0;counter-reset:p}
+  .principle{position:relative;padding:1.2rem 0 1.2rem 3.2rem;border-top:1px solid var(--rule);margin:0}
+  .principle:last-child{border-bottom:1px solid var(--rule)}
+  .principle::before{counter-increment:p;content:counter(p,decimal-leading-zero);position:absolute;left:0;top:1.35rem;
+    font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:600}
+  .principle h3{margin:0 0 .35rem;font-size:1.25rem}
+  .principle p{margin:.3rem 0;color:var(--muted);font-size:.97rem}
+  .principle p strong{color:var(--ink)}
+  .principle .cite{font-size:.78rem;color:var(--faint)}
+  .anchor{position:absolute;right:0;top:1.2rem;font-family:var(--mono);font-size:.78rem;color:var(--faint);text-decoration:none;
+    border:1px solid var(--rule);border-radius:4px;padding:.1rem .45rem;background:var(--card)}
+  .anchor:hover{color:var(--accent);border-color:var(--accent)}
+  .anchor[data-copied]::after{content:" copied";color:var(--accent)}
+  .quote{font-family:"Fraunces","Iowan Old Style","Palatino Linotype",Georgia,serif;font-variation-settings:"opsz" 72;font-style:italic;font-size:1.05rem;color:var(--ink);margin:.6rem 0 .2rem}
+
+  /* ── two columns (operator / agents) ── */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem}
+  .col{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:1.1rem 1.25rem}
+  .col h3{margin:0 0 .5rem;font-size:1.05rem}
+  .col ul{font-size:.93rem;color:var(--muted)}
+  .col .no{color:var(--accent-ink)}
+  @media (max-width:640px){.two{grid-template-columns:1fr}}
+
+  /* ── the loop ── */
+  .loop{display:grid;grid-template-columns:repeat(7,1fr);gap:.55rem;margin:1.6rem 0 .6rem}
+  .loop div{position:relative;background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:.9rem .5rem .8rem;text-align:center;font-size:.86rem;font-weight:600}
+  .loop div i{display:block;font-family:var(--mono);font-style:normal;font-size:.66rem;color:var(--faint);margin-bottom:.3rem;letter-spacing:.08em}
+  .loop div.op{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink)}
+  .loop div.op i{color:var(--accent)}
+  .loop div small{display:block;font-weight:500;color:var(--accent);font-size:.62rem;margin-top:.3rem;letter-spacing:.08em;text-transform:uppercase}
+  .loop div:not(:last-child)::after{content:"→";position:absolute;right:-.62rem;top:50%;transform:translateY(-50%);color:var(--faint);font-size:.8rem;z-index:1}
+  @media (max-width:760px){.loop{grid-template-columns:repeat(4,1fr)}.loop div::after{display:none}}
+  @media (max-width:420px){.loop{grid-template-columns:repeat(2,1fr)}}
+
+  /* ── the evolution: four eras, the last one highlighted ── */
+  .eras{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin:1.4rem 0 1.6rem}
+  .eras div{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:.95rem 1rem}
+  .eras div i{display:block;font-family:var(--mono);font-style:normal;font-size:.66rem;letter-spacing:.1em;color:var(--faint);margin-bottom:.35rem}
+  .eras div b{display:block;font-family:"Fraunces","Iowan Old Style","Palatino Linotype",Georgia,serif;font-variation-settings:"opsz" 72;font-size:1.15rem;font-weight:600;margin-bottom:.35rem}
+  .eras div p{margin:0;font-size:.86rem;color:var(--muted);line-height:1.5}
+  .eras div.now{border-color:var(--accent);background:var(--accent-soft)}
+  .eras div.now i,.eras div.now b{color:var(--accent-ink)}
+  @media (max-width:820px){.eras{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:480px){.eras{grid-template-columns:1fr}}
+
+  /* ── structure of work + anatomy, as grids instead of walls ── */
+  .tree{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;margin:1rem 0 0}
+  .tree div{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:.9rem 1rem}
+  .tree dt{font-family:"Fraunces","Iowan Old Style","Palatino Linotype",Georgia,serif;font-variation-settings:"opsz" 72;font-weight:600;font-size:1.05rem;margin:0 0 .25rem}
+  .tree dd{margin:0;font-size:.88rem;color:var(--muted)}
+  @media (max-width:760px){.tree{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:480px){.tree{grid-template-columns:1fr}}
+  .anatomy{columns:2;column-gap:2rem;margin:1rem 0 0;padding-left:1.4rem}
+  .anatomy li{break-inside:avoid;font-size:.95rem;color:var(--muted);margin:.4rem 0}
+  .anatomy li b{color:var(--ink);font-weight:600}
+  .anatomy li.later{color:var(--faint)}
+  .anatomy li.later b{color:var(--muted)}
+  @media (max-width:640px){.anatomy{columns:1}}
+  .states dt{font-weight:600;margin-top:1rem}
+  .states dt .st{font-family:var(--mono);font-size:.68rem;color:var(--accent);margin-left:.5rem;letter-spacing:.06em}
+  .states dd{margin:.25rem 0 0;color:var(--muted);font-size:.95rem}
+
+  /* ── vocabulary ── */
+  .vocab{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem 1.6rem;margin-top:1rem}
+  .vocab div{border-top:1px solid var(--rule);padding-top:.6rem}
+  .vocab dt{font-weight:600;font-family:"Fraunces","Iowan Old Style","Palatino Linotype",Georgia,serif;font-variation-settings:"opsz" 72;font-size:1.05rem}
+  .vocab dd{margin:.2rem 0 0;font-size:.9rem;color:var(--muted)}
+  @media (max-width:640px){.vocab{grid-template-columns:1fr}}
+
+  /* ── reject list ── */
+  .reject li{margin:.5rem 0}
+  .reject b{font-weight:600}
+
+  /* ── amendments ── */
+  details.amend{border-top:1px solid var(--rule);padding:.7rem 0}
+  details.amend:last-of-type{border-bottom:1px solid var(--rule)}
+  details.amend summary{cursor:pointer;list-style:none;display:flex;gap:1rem;align-items:baseline}
+  details.amend summary::-webkit-details-marker{display:none}
+  details.amend summary .d{font-family:var(--mono);font-size:.74rem;color:var(--accent);white-space:nowrap;min-width:9.5rem}
+  details.amend summary .t{font-weight:600}
+  details.amend summary::after{content:"+";margin-left:auto;color:var(--faint);font-family:var(--mono)}
+  details.amend[open] summary::after{content:"–"}
+  details.amend .body{padding:.6rem 0 .4rem 10.5rem;color:var(--muted);font-size:.93rem}
+  details.amend .body p{margin:.5rem 0}
+  @media (max-width:640px){details.amend .body{padding-left:0}details.amend summary{flex-wrap:wrap}}
+
+  /* ── bridge / footer ── */
+  .story{margin:1.3rem 0 0;font-size:.95rem}
+  .story a{font-weight:500}
+  .door{margin:1.8rem 0 0;padding:1.1rem 1.25rem;border:1px dashed var(--faint);border-radius:8px}
+  .door h3{margin:0 0 .4rem;font-size:1.1rem}
+  .door p{margin:0;color:var(--muted);font-size:.95rem}
+  .door strong{color:var(--ink)}
+  .door .soon{color:var(--faint)}
+  footer{padding:2.5rem 0 4rem;color:var(--faint);font-size:.82rem;border-top:1px solid var(--rule);margin-top:3rem}
+  footer p{margin:.35rem 0}
+  .final{list-style:none;padding:0;margin:1rem 0 0}
+  .final li{font-family:"Fraunces","Iowan Old Style","Palatino Linotype",Georgia,serif;font-variation-settings:"opsz" 72;font-size:1.12rem;padding:.55rem 0;border-bottom:1px solid var(--rule-soft);margin:0}
+
+  /* ── print: always light, one column, every amendment open, external URLs spelled out ── */
+  @page{margin:16mm 15mm 18mm}
+  @media print{
+    :root,:root:not([data-theme="light"]){
+      --paper:#fff; --card:#fff; --ink:#000; --muted:#333; --faint:#666;
+      --rule:#bbb; --rule-soft:#d8d8d8; --accent:#8b2e1f; --accent-ink:#6f2418; --accent-soft:#f3ece9;
+    }
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    html{scroll-behavior:auto}
+    body{font-size:10.5pt;line-height:1.5;background:#fff;color:#000}
+    .bar,.anchor,.door .soon{display:none}
+    .wrap{width:100%}
+    .breakout{width:100%;left:auto;transform:none}
+    header.hero{padding:0 0 1.4rem}
+    h1{font-size:26pt}
+    h2{font-size:16pt;break-after:avoid}
+    h3{break-after:avoid}
+    section{padding:1.5rem 0}
+    section.band{box-shadow:none;clip-path:none;background:transparent}
+    section > h2::before{position:static;margin:0 0 .25rem;width:auto;text-align:left;font-size:1.25rem}
+    #principles,#amendments{break-before:page}
+    .principle,.eras div,.tree div,.vocab div,.col,.loop,.bets,.note,.stance,.pull,.door,details.amend,.values li,.states dd,.final li{break-inside:avoid}
+    .eras{grid-template-columns:repeat(2,1fr)}
+    .anatomy{columns:1}
+    .loop div{font-size:.72rem;padding:.6rem .3rem .5rem}
+    .principle p,.lede,.note,.col ul,.states dd,.vocab dd,.tree dd,.eras div p,.bets p,details.amend .body{color:#222}
+    details.amend summary::after{display:none}
+    details.amend .body{padding-left:0}
+    a{color:inherit;text-decoration:none}
+    a[href^="http"]::after{content:" (" attr(href) ")";font-size:.82em;color:#555;word-break:break-all}
+    a[href="https://raguvind.com"]::after{content:none}
+    footer{padding:1rem 0 0;margin-top:1.5rem}
+  }
+</style>
+</head>
+<body>
+
+<div class="bar"><div class="wrap">
+  <a class="brand" href="#top">Operator<b>-</b>Led</a>
+  <nav class="links" aria-label="Sections">
+    <a href="#values">Values</a><a href="#principles">Principles</a><a href="#loop">The loop</a>
+    <a href="#model">Operating model</a><a href="#vocabulary">Vocabulary</a><a href="#amendments">Amendments</a>
+  </nav>
+  <span class="ver">v1.0 · 6 Sep 2026</span>
+</div></div>
+
+<div class="wrap" id="top">
+
+<header class="hero">
+  <p class="kicker">Operator-Led Software Development</p>
+  <h1>Manifesto for <span style="white-space:nowrap">Operator-Led</span> Software Development</h1>
+  <p class="definition"><strong>Operator-Led Software Development</strong> is a way of building software in which a
+  human operator sets intent, grants bounded authority to AI agents, judges the evidence, and accepts the outcome. AI
+  agents may do the work, but the operator remains accountable for every change that is accepted into the codebase.
+  <strong>Nothing closes without the operator's verdict.</strong></p>
+  <div class="stance"><strong>The operator is in command</strong> — the final authority, whether or not their hands are
+  on the controls.</div>
+  <div class="byline">
+    <span>Proposed and authored by <b>Raguvind Tharanitharan</b> · <a href="https://raguvind.com">raguvind.com</a></span>
+    <span>The term <b>Operator-Led Software Development</b> is coined in this document</span>
+    <span>First written <b>19 August 2026</b>, while running two real projects</span>
+    <span>Published <b>6 September 2026</b> · version 1.0</span>
+  </div>
+  <p class="story"><a href="https://raguvind.com/writing/faster-than-you-can-follow">Read the incidents that produced this →</a></p>
+</header>
+
+<section id="why">
+  <h2>Why this exists: what changed, and what broke</h2>
+  <p class="lede">Every software process is built around two questions: who does the work, and what needs
+  coordinating. For decades, the first answer stayed the same: <strong>people</strong>. What changed was how their work
+  was coordinated. <strong>AI agents</strong> change the first answer.</p>
+  <div class="eras breakout">
+    <div><i>1970s →</i><b>Waterfall</b><p>Humans build, phase by phase. The process coordinates <em>documents and
+    handoffs</em>, assuming change is expensive so everything is decided up front.</p></div>
+    <div><i>2001 →</i><b>Agile</b><p>Humans build, in small iterating teams. The process coordinates <em>people and
+    feedback</em>, assuming the team can inspect every change it makes.</p></div>
+    <div><i>2009 →</i><b>DevOps</b><p>The people who write the software also run it. The process coordinates
+    <em>writing code and shipping it</em> through CI/CD pipelines: automated tests, automated releases, updates many
+    times a day. A person still writes every change.</p></div>
+    <div class="now"><i>now</i><b>AI agents</b><p>AI agents author a growing share of the change; a human sets intent and judges.
+    The process must coordinate <em>authority</em>: who may act, on what, and what proved it.</p></div>
+  </div>
+  <p><strong>What broke is review as the mechanism of control.</strong> AI agents can now plan, implement, test, review, and document work
+  faster than one person can read it. In one four-day stretch on my own project, agents produced 144 small scripts
+  against a live system. Each one carried a decision nobody had reviewed, because nobody reviews 144 of anything.
+  Every skimmed <em>"looks good"</em> accepts decisions the operator did not actually judge, and nothing records that it
+  happened. Tickets and chat transcripts were built to coordinate humans. They preserve the conversation, but not a
+  durable record of intent, authority, action, and evidence.</p>
+  <p class="pull">Trust changes hands one reflexive approval at a time, until the person accountable for the project
+  no longer knows what is in it.</p>
+  <div class="bets">
+    <span class="k">Two bets I am making</span>
+    <p><strong>First:</strong> most of the code that will exist in ten years has not been written yet, and most of it
+    will not be written by hand. AI agents will produce software at a volume no human development process was designed
+    to absorb.</p>
+    <p><strong>Second:</strong> much of the software written over the last fifty years will be rewritten, replaced, or
+    retired in the same window, and AI will supply both the pressure and the means: it will find weaknesses in old code
+    faster than people can patch them by hand, and it will make translating that code cheap.</p>
+    <p>Both bets lead to the same place: code will arrive faster than humans can reasonably inspect it. And
+    <a href="https://www.veracode.com/resources/analyst-reports/2025-genai-code-security-report/">today's evidence</a> says
+    AI-generated code carries <em>more</em> security vulnerabilities than human-written code, not fewer. Whoever is
+    accountable for a codebase will need a way to decide which changes are accepted into it. That's what this is for.</p>
+  </div>
+  <p>This manifesto describes a software development lifecycle, from intent to acceptance, for the way work is now
+  actually done: <strong>one human operator in command of several AI agents.</strong> The agents get real autonomy
+  inside the authority they are granted. They do not get to decide what the product should become, how much risk is
+  acceptable, or whether the result is good enough.</p>
+  <p>The point is not to keep agents busy. The point is to produce accepted outcomes: the operator's intent turned into changes the
+  operator has accepted, with authority granted deliberately, every action and its cost visible, decisions that can be
+  found later, and evidence that lasts.</p>
+  <p>That does not mean watching every keystroke. The operator holds purpose, boundaries, risk, and acceptance; the
+  agent has enough autonomy to finish the work it was given, and no implied authority to redefine it.</p>
+</section>
+
+<section id="values" class="band">
+  <h2>What we value</h2>
+  <p class="lede">The items on the right can be useful. They must not substitute for the items on the left.</p>
+  <ul class="values breakout">
+    <li><span class="l">accepted outcomes</span><span class="o">over</span><span class="r">completed activity</span></li>
+    <li><span class="l">explicit authority</span><span class="o">over</span><span class="r">assumed permission</span></li>
+    <li><span class="l">evidence</span><span class="o">over</span><span class="r">confidence</span></li>
+    <li><span class="l">durable decisions</span><span class="o">over</span><span class="r">conversational memory</span></li>
+    <li><span class="l">dependency clarity</span><span class="o">over</span><span class="r">collision discovery</span></li>
+    <li><span class="l">bounded autonomy</span><span class="o">over</span><span class="r">constant intervention</span></li>
+    <li><span class="l">economic visibility</span><span class="o">over</span><span class="r">token anxiety</span></li>
+    <li><span class="l">durable learning</span><span class="o">over</span><span class="r">ceremonial compliance</span></li>
+    <li><span class="l">a small process that is followed</span><span class="o">over</span><span class="r">a complete process that is ignored</span></li>
+  </ul>
+</section>
+
+<section id="principles">
+  <h2>Twelve principles</h2>
+  <p class="lede">Each one stands on its own. The ¶ links give every principle its own address, so it can be quoted
+  directly.</p>
+  <ol class="principles">
+    <li class="principle" id="p1"><a class="anchor" href="#p1" title="Copy link to this principle">¶ p1</a>
+      <h3>The operator is in command.</h3>
+      <p class="quote">"AI agents may propose and execute. The human operator alone sets direction, grants authority, and accepts outcomes."</p>
+      <p>Responsibility does not travel with the work. Aviation has the right phrase for it: the pilot in command is
+      <em>"directly responsible for, and the final authority as to, the operation"</em> of the aircraft, whether or not their
+      hands are on the controls. The operator remains accountable for every change they accept, even when agents did all the typing.</p></li>
+
+    <li class="principle" id="p2"><a class="anchor" href="#p2" title="Copy link to this principle">¶ p2</a>
+      <h3>Authority is a lease: granted, bounded, and temporary.</h3>
+      <p>An assignment is a lease, not ownership. It names the agent, the piece of work, what they may touch, and the
+      conditions under which they have to come back to the operator. It does not last forever, and it does not stretch
+      to cover whatever seems related. <strong>Having access to a system is not permission to change it.</strong></p></li>
+
+    <li class="principle" id="p3"><a class="anchor" href="#p3" title="Copy link to this principle">¶ p3</a>
+      <h3>AI agents propose and execute; only the operator decides.</h3>
+      <p>AI agents are capable contributors. They are not the authority on the product. They can investigate, propose,
+      build, test, review, document, and argue with the framing. What they cannot do on their own is change the goal or
+      the priority, widen the scope in any meaningful way, or accept their own result on the operator's behalf. An agent
+      may prepare a decision; only the operator makes it. Different agents have different capabilities. None has
+      authority by default. Whatever authority an agent exercises was granted by the operator.</p></li>
+
+    <li class="principle" id="p4"><a class="anchor" href="#p4" title="Copy link to this principle">¶ p4</a>
+      <h3>One question, one recommendation.</h3>
+      <p>When a decision goes to the operator, it should be one question with a recommended answer. An agent that
+      hands over a menu of options, instead of weighing them and recommending one, is passing its work upward, not asking for authority.
+      Enough of those menus and a perfectly sound process starts to feel unbearable. We learned this the hard way.</p></li>
+
+    <li class="principle" id="p5"><a class="anchor" href="#p5" title="Copy link to this principle">¶ p5</a>
+      <h3>Decisions arrive in product language.</h3>
+      <p>The operator should not have to turn intent into technical instructions. Decisions come to them in the
+      language of the product: what is changing, why it matters, what it costs, what could go wrong, and what they are
+      being asked to decide. The technical detail lives behind the interface, where the operator can go looking for
+      it but does not trip over it.</p></li>
+
+    <li class="principle" id="p6"><a class="anchor" href="#p6" title="Copy link to this principle">¶ p6</a>
+      <h3>Challenge the framing before it gets expensive.</h3>
+      <p>An AI agent should push back on weak framing while the work is still being shaped, when changing course is
+      cheap. Once implementation starts, changing the framing gets expensive. A proposal with nothing under "where the framing is
+      wrong" usually has not looked hard enough.</p></li>
+
+    <li class="principle" id="p7"><a class="anchor" href="#p7" title="Copy link to this principle">¶ p7</a>
+      <h3>"It should work" is not evidence.</h3>
+      <p>Evidence should match the risk: tests, observed behaviour, measurements, review findings, a demonstration
+      someone else can reproduce. Decide what will count as proof before the work starts, and make sure the checks can
+      actually fail. A confident sentence in an approved plan is not evidence, however well it is written.</p></li>
+
+    <li class="principle" id="p8"><a class="anchor" href="#p8" title="Copy link to this principle">¶ p8</a>
+      <h3>Work is closed by evidence and acceptance, not by saying so.</h3>
+      <p>Work is not finished because an agent stopped working on it. Implementation and acceptance are two different
+      states: <em>implemented, awaiting acceptance</em> is an honest description; <em>done</em> is not. Technical checks
+      can be automated and reviews can be delegated. Accepting the result is a human act. A rejection says what is
+      missing and sends the work back with its history intact.</p></li>
+
+    <li class="principle" id="p9"><a class="anchor" href="#p9" title="Copy link to this principle">¶ p9</a>
+      <h3>Nothing is hidden.</h3>
+      <p>Failed attempts, rework, uncertainty, and cost all stay on the record. When a number is unknown, it is
+      recorded as unknown, not as zero. Tokens consumed are not productivity. Cost is read against what was accepted,
+      what had to be redone, and what was learned. Cost is context, not a score.</p></li>
+
+    <li class="principle" id="p10"><a class="anchor" href="#p10" title="Copy link to this principle">¶ p10</a>
+      <h3>Durable decisions over conversational memory.</h3>
+      <p>Any decision that changes direction, scope, authority, priority, or accepted risk has to survive outside the
+      conversation it was made in: the question, the options, the operator's choice and their reason, when it took
+      effect, and what it touched. A chat log is not a place to keep facts you will need next month.</p></li>
+
+    <li class="principle" id="p11"><a class="anchor" href="#p11" title="Copy link to this principle">¶ p11</a>
+      <h3>No process theatre.</h3>
+      <p>Every field, status, meeting, and metric has to help someone authorize, execute, prove, accept, or learn. If
+      it does not, remove it. The method has no sprints or recurring ceremonies of its own; the work itself creates the events. A
+      template filled in for form's sake is the theatre this document is trying to get rid of. A small process people
+      follow beats a complete one they ignore.</p></li>
+
+    <li class="principle" id="p12"><a class="anchor" href="#p12" title="Copy link to this principle">¶ p12</a>
+      <h3>It governs how a system is built, not how it behaves once it is running.</h3>
+      <p>This method covers proposing, authorizing, executing, proving, and accepting. Its job ends when an outcome is
+      accepted. What the finished system does in production is the business of that system's own controls, which have
+      to work whether or not the build tooling is reachable. That is a boundary, not a gap. A method that also tried to
+      govern every system it helped build would be an opinion about running a business bolted onto an opinion about
+      building one.</p></li>
+  </ol>
+</section>
+
+<section id="loop" class="band">
+  <h2>The loop: seven states</h2>
+  <p class="lede">Work moves through seven states. Each one marks a real change in certainty or authority; none is a
+  column added for appearance. Two of them belong to the operator alone.</p>
+  <div class="loop breakout">
+    <div><i>01</i>Capture</div><div><i>02</i>Shape</div><div class="op"><i>03</i>Authorize<small>operator</small></div>
+    <div><i>04</i>Execute</div><div><i>05</i>Prove</div><div class="op"><i>06</i>Accept<small>operator</small></div><div><i>07</i>Learn</div>
+  </div>
+  <dl class="states">
+    <dt>1 · Capture</dt><dd>An idea, request, defect, or concern is recorded without pretending it is ready. Capture
+    protects the thought from being lost; it does not authorize work.</dd>
+    <dt>2 · Shape</dt><dd>The problem, desired outcome, boundary, dependencies, risks, alternatives, and acceptance
+    evidence are made clear enough for a decision. Shape is finished when there is a proposal: a document the operator
+    can decide on, not a form someone filled in.</dd>
+    <dt>3 · Authorize <span class="st">record state: Backlog</span></dt><dd>The operator chooses whether the work should
+    proceed, its priority, its owner, its boundaries, and its investment appetite. Authorization creates a lease. In
+    the record, work waiting here shows as <em>Backlog</em>: captured, nothing authorized yet. The label describes a
+    condition. It is not an instruction to the operator.</dd>
+    <dt>4 · Execute <span class="st">record state: In Progress</span></dt><dd>The assigned AI agent works within the lease and
+    may make the ordinary implementation decisions the outcome requires. Material scope expansion, a new risk, a
+    collision with another agent, or an exhausted investment appetite returns the work to the operator.</dd>
+    <dt>5 · Prove <span class="st">record state: Awaiting Verdict</span></dt><dd>The agent produces evidence appropriate to
+    the risk. A submitted result puts the record in <em>Awaiting Verdict</em>; the judgment that follows is the
+    operator's alone.</dd>
+    <dt>6 · Accept</dt><dd>The operator determines whether the evidence satisfies the product outcome. Rejection must
+    state what evidence or outcome is missing and sends the work back without erasing its history.</dd>
+    <dt>7 · Learn</dt><dd>Material surprises become durable knowledge: a decision, a new rule, a defect, a changed
+    acceptance condition, or an improvement to this process. Learning is complete only when it can change future
+    behaviour.</dd>
+  </dl>
+  <div class="note"><strong>What Accept does not mean.</strong> Accept is a judgement about proof, not about delivery.
+  Nothing here records whether the work ever reached anyone, so an outcome that is accepted and never released is not
+  yet a product outcome. Release is not an eighth state, on purpose: until there is something to release, a release
+  record would be a field nobody reads. Better to say the limit out loud than have someone discover it during an
+  incident.</div>
+</section>
+
+<section id="model">
+  <h2>The operating model</h2>
+  <div class="two breakout">
+    <div class="col">
+      <h3>The operator owns the product</h3>
+      <ul>
+        <li>defines the North Star and product goals;</li>
+        <li>chooses which Features matter and their order;</li>
+        <li>authorizes work and assigns agents;</li>
+        <li>resolves ambiguity, conflicts, and risk decisions;</li>
+        <li>changes or stops work when the expected value no longer justifies the investment;</li>
+        <li>accepts or rejects outcomes based on evidence;</li>
+        <li>remains accountable for the system even when agents performed the work.</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h3>The AI agents are capable contributors</h3>
+      <ul>
+        <li>investigate and explain; propose designs, plans, and decompositions;</li>
+        <li>implement authorized changes; test, review, and document;</li>
+        <li>identify new work, defects, risks, and dependencies;</li>
+        <li>challenge framing when the requested work would not achieve the goal.</li>
+      </ul>
+      <p class="no"><strong>Never silently:</strong> change the goal or priority · expand scope materially · accept their own
+      outcome · hide failed attempts, rework, uncertainty, or cost · declare a dependency resolved without evidence ·
+      treat access as permission.</p>
+    </div>
+  </div>
+
+  <h3>The structure of work</h3>
+  <p>Every meaningful item leads upward to the project's reason for existing.</p>
+  <dl class="tree breakout">
+    <div><dt>North Star</dt><dd>The durable reason the product exists. Not a milestone; never complete. The test applied to every Feature.</dd></div>
+    <div><dt>Feature</dt><dd>A product-level capability with a goal stated as an outcome, a way to recognize success, an accountable operator, and a state derived from the work below it.</dd></div>
+    <div><dt>Spec <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint);font-weight:400">optional</span></dt><dd>Short, and only for when the design decisions are the hard part. A Draft carries no authority. Freezing it is the operator's act. Changing a frozen Spec is an amendment: reasoned, versioned, and visible.</dd></div>
+    <div><dt>Initiative</dt><dd>A coherent body of change advancing one Feature — the normal level of authorization. Its outcome names who can do what once accepted, and why.</dd></div>
+    <div><dt>Task</dt><dd>Bounded work with a stated expected result. Work outside the approved scope becomes a new Task, not an extra step slipped into the current one.</dd></div>
+    <div><dt>Bug</dt><dd>A record that the software did something other than what was intended. Bugs keep their own history, because they show where both the product and the process are going wrong.</dd></div>
+  </dl>
+
+  <h3>The anatomy of a proposal</h3>
+  <p>Shape produces a document, not a form. Its parts, in the order a reader meets them. The last three are written
+  during and after the build.</p>
+  <ol class="anatomy">
+    <li><b>In plain words</b>, before any detail: a story a non-technical reader can follow.</li>
+    <li><b>Measurements taken today</b>, at a named commit, not impressions.</li>
+    <li><b>The one idea this turns on</b>, argued against the alternative it beat.</li>
+    <li><b>The boundaries, decided</b>, including the procedures the work will follow, by name.</li>
+    <li><b>Deliberately not changed</b>, with the reason each thing stays as it is.</li>
+    <li><b>Where the framing is wrong</b>: the proposal pushes back on itself first.</li>
+    <li><b>How success is proven</b>, with checks that can actually fail.</li>
+    <li class="later"><b>What the build found</b>: discoveries and corrections, left visible.</li>
+    <li class="later"><b>Done when, as it finished</b>: gates that were not met are marked, not passed over.</li>
+    <li class="later"><b>What this does not fix</b>: the limit, stated plainly.</li>
+  </ol>
+  <p>Two rules go with it. <strong>The contract freezes but the document lives</strong>: what the operator authorized
+  is fixed at approval, while the proposal itself keeps growing alongside the project. And <strong>the headings are
+  not what make a proposal trustworthy.</strong> Numbers taken from a real commit, a correction left visible, a gate
+  marked as not met: those are.</p>
+
+  <h3>Two ledgers beside the work</h3>
+  <p>The work hierarchy records what is being done and why. Two append-only ledgers record what happened around it.
+  The <strong>activity ledger</strong> holds every AI agent run against a work item: which agent, which provider and
+  model, when it started and finished, how it ended, what it cost where the provider reports cost, and what evidence it
+  produced (or why it produced none). The <strong>decision ledger</strong> holds every decision that changed direction,
+  scope, authority, priority, or accepted risk, with the question, the options, the operator's choice and reason, and
+  what it affected. Cost is tracked automatically only when agents run through an API that reports usage. An agent
+  working in a terminal records its own runs, so the ledger holds what the agent reported. That is why hiding cost or
+  rework is on the short list of things an agent may never do.</p>
+
+  <h3>Two kinds of dependency</h3>
+  <p>One work item has at most one executing owner unless collaboration is explicitly authorized. Several agents may
+  investigate or review the same item, but their activities stay separately visible. And two kinds of dependency must
+  not be confused. A <strong>product dependency</strong> means one outcome genuinely requires another outcome first. An
+  <strong>execution collision</strong> means two activities may alter the same files, data, or external state. The
+  first affects product order. The second affects safe coordination. Neither should be inferred only after a merge
+  conflict occurs.</p>
+
+  <h3>Practices deliberately rejected</h3>
+  <ul class="reject">
+    <li><b>Backlog as authority.</b> Being recorded does not mean being approved.</li>
+    <li><b>Agent self-assignment without operator intent.</b> Availability is not priority.</li>
+    <li><b>Permanent assignments.</b> Leases expire or return for a decision.</li>
+    <li><b>Hidden rework.</b> A failed approach remains part of the history.</li>
+    <li><b>Conversation as memory.</b> Durable facts and decisions belong in the project.</li>
+    <li><b>Completion by assertion.</b> Evidence and acceptance close work.</li>
+    <li><b>One status for everything.</b> Execution, blockage, and acceptance are different facts.</li>
+    <li><b>Provider comparison by raw tokens.</b> Token systems are not economically or technically equivalent.</li>
+    <li><b>Process theatre.</b> A field, status, meeting, or metric must help authorize, execute, prove, accept, or learn — or be removed.</li>
+    <li><b>Premature platform building.</b> Abstraction is earned through repeated use.</li>
+    <li><b>The process as its own client.</b> Using the method to govern its own tooling produces ceremony about
+    ceremony. The one day this process was pointed at its own development, it generated fifteen operator decisions and
+    came close to being abandoned. It has to earn its keep on real work.</li>
+  </ul>
+  <p>We also reject, as measures of success on their own: agent utilization, tokens per task, story points, velocity,
+  burndown, and the number of items closed. Every one of them can improve while the product gets worse. What we look at
+  instead: accepted outcomes and what they changed, time spent waiting for a decision, how often work is accepted the
+  first time, rework as a share of total investment, defects found after acceptance, and how old the active leases and
+  blocked items are.</p>
+</section>
+
+<section id="vocabulary">
+  <h2>The vocabulary</h2>
+  <p class="lede">A short glossary. These are the terms the rest of this page assumes.</p>
+  <dl class="vocab breakout">
+    <div><dt>Operator</dt><dd>The one human who sets intent, grants authority, and accepts outcomes. Accountable for the system even when agents did the work.</dd></div>
+    <div><dt>AI agent</dt><dd>A capable contributor — software that plans, writes, tests, and reviews under a human's direction — that may propose and execute but never decide.</dd></div>
+    <div><dt>Intent</dt><dd>What the operator is trying to accomplish, stated as an outcome rather than a task and recorded in the structure of work: the North Star at the top, a Feature's goal beneath it, an Initiative's outcome beneath that. Every piece of work leads back up to one of these. Intent is what authority is granted for.</dd></div>
+    <div><dt>Plan</dt><dd>A proposal, written to the anatomy, that an agent submits and the operator decides on. Proposed until decided; authorizes nothing by itself.</dd></div>
+    <div><dt>Lease</dt><dd>Authority with edges: who may act, on what, within what scope, and until when. Created when the operator approves a plan; closed by the verdict.</dd></div>
+    <div><dt>Activity</dt><dd>One recorded action by an agent under a lease, against one plan step. Not a log line: an authorized action with its provenance attached.</dd></div>
+    <div><dt>Evidence</dt><dd>Proof appropriate to the risk, attached to the acceptance conditions fixed before the work began.</dd></div>
+    <div><dt>Submission</dt><dd>The agent's account of a result: what was done, what was not, and the evidence for each condition. Puts the work in Awaiting Verdict.</dd></div>
+    <div><dt>Verdict</dt><dd>The operator's judgment on a submission: accept, reject, redirect, or stop, with a reason in the operator's own words.</dd></div>
+    <div><dt>Decision</dt><dd>Any recorded operator act that changes direction, scope, authority, or acceptance. Append-only. The reason is part of the record.</dd></div>
+    <div><dt>The loop</dt><dd>Capture → Shape → Authorize → Execute → Prove → Accept → Learn. Authorize and Accept are the operator's alone.</dd></div>
+    <div><dt>Backlog · In Progress · Awaiting Verdict</dt><dd>The three record states a work item shows: captured with nothing authorized; executing under a lease; submitted and awaiting the operator.</dd></div>
+    <div><dt>North Star · Feature · Spec · Initiative · Task · Bug</dt><dd>The structure of work, top to bottom — every item leading upward to the reason the product exists.</dd></div>
+  </dl>
+</section>
+
+<section id="test">
+  <h2>The final test</h2>
+  <p class="lede">At any moment, the operator should be able to answer:</p>
+  <ul class="final">
+    <li>Why are we doing this work?</li>
+    <li>Who or what authorized it?</li>
+    <li>Which agent is acting, and within what boundary?</li>
+    <li>What does it depend on or collide with?</li>
+    <li>What has it cost?</li>
+    <li>What evidence has it produced?</li>
+    <li>What decision is required from me?</li>
+    <li>How will we know the outcome is accepted?</li>
+  </ul>
+</section>
+
+<section id="amendments">
+  <h2>How this manifesto changes</h2>
+  <p class="lede">This is a governing document, not scripture. A change must record the observed problem that prompted
+  it, which principle or practice changes, why the replacement is expected to work better, and the date and operator
+  decision. AI agents may propose amendments. They may not quietly change the operating model while implementing the
+  tooling.</p>
+  <p class="note"><strong>The log below is this document's own history, with the project names left in.</strong> It was
+  written while running two real projects: a small algorithmic trading firm called ATAM, and Ingee, the tool that
+  implements the method. Every entry started as a problem somebody actually hit. The entries have not been cleaned up
+  after the fact.</p>
+
+  <details class="amend"><summary><span class="d">6 September 2026</span><span class="t">Two values, tested against the method.</span></summary><div class="body">
+    <p>Observed problem: preparing the values for a public reader, each pair was checked against what the rest of this
+    document actually says. Two did not hold up. "Dependency clarity over a crowded task list" contrasted a real value
+    with the wrong failure: the claim is not about visualization but about <em>when</em> structure is known — declared
+    beforehand, or discovered through a merge conflict — and the "two kinds of dependency" principle had been left out of
+    this page entirely, so the value stood there with nothing under it. "Learning over ceremonial compliance" set a state
+    against a vice, and "learning" alone did not say which kind: a retrospective also counts, and the seventh state
+    requires more than that.</p>
+    <p>What changed: "dependency clarity over <strong>collision discovery</strong>"; "<strong>durable</strong> learning
+    over ceremonial compliance," borrowing the word already carried by "durable decisions" two lines up; the two-kinds
+    principle restored under the operating model. "Economic visibility over token anxiety" was examined and kept: it
+    names a specific anti-pattern this document rejects. All nine values now describe things the method can defend line
+    by line. Date and decision: 6 September 2026, operator RT.</p>
+  </div></details>
+
+  <details class="amend"><summary><span class="d">5 September 2026</span><span class="t">The name.</span></summary><div class="body">
+    <p>Observed problem: the working name, "Operator-Led PDLC," was an adjective carrying a non-standard acronym the
+    reader had to decode before caring, and the bare adjective carries an unrelated private-equity meaning. Two days of
+    research — registry checks, collision searches, the naming histories of Agile, Lean, DevOps, and the OODA loop — and
+    one deliberate re-opening settled the formal name as <strong>Operator-Led Software Development</strong>: the
+    template Agile itself used, whose founding document was the <em>Manifesto for Agile Software Development</em>.</p>
+    <p>What changed: the title, and every "PDLC" that named the concept now names it; every "PDLC" that meant the seven
+    states now says "the lifecycle," which is what it always meant. The concept names the discipline; the reference
+    implementation covers the whole lifecycle from intent to acceptance. Date and decision: 5 September 2026, operator RT.</p>
+  </div></details>
+
+  <details class="amend"><summary><span class="d">30 August 2026</span><span class="t">The scope, stated plainly.</span></summary><div class="body">
+    <p>Observed problem: a conversation about what the reference implementation is worth building and selling as
+    drifted into framing it as a governance platform for ATAM's production system. The operator corrected it: the method
+    governs how a project gets <em>built</em>; ATAM's own governance — the order gate, the authority rules, the data
+    guard — runs its production behaviour entirely on its own, with or without the build tooling reachable. Nothing in
+    this document said that boundary plainly before.</p>
+    <p>What changed: a new section states it directly. Why this is expected to work better: without it, the document
+    invites exactly the conflation that just happened — mistaking build-time authorization for runtime governance,
+    which are different jobs with different owners. Date and decision: 30 August 2026, operator RT.</p>
+  </div></details>
+
+  <details class="amend"><summary><span class="d">29 August 2026</span><span class="t">The Feature Spec, and Steps before a new Task.</span></summary><div class="body">
+    <p>Observed problem: retiring one employee (the control) produced three separate Plans in a row — TASK-037, then
+    BUG-026, then BUG-027 — each re-arguing the same wind-down design because nothing durable held it above the Plan
+    level; earlier the same week, an agent stopped mid-investigation because a Task did not yet exist for it, the same
+    over-ceremony this document already names as a risk. Research into how other agent-native teams work confirmed the
+    fix is not a heavier document — one such team moved to <em>less</em> upfront design, not more, once agentic coding
+    became the default — but a short, optional Spec above the Initiative, and a clear line between foreseen sub-work
+    and genuinely new work.</p>
+    <p>What changed: a Feature may carry a Spec — short, optional, proportional, never mandatory. Separately, a Task's
+    Plan may grow more Steps for foreseen work inside its already-approved scope with no new authorization; work outside
+    that scope is always a new Task or Bug with its own Plan. That line is the operator's, drawn by what was already
+    approved — never the agent's, drawn by convenience. Why this is expected to work better: it removes the repeated
+    re-argument without removing the checkpoint that matters — the moment the operator names a specific agent for a
+    specific slice of work. Date and decision: 29 August 2026, operator RT.</p>
+  </div></details>
+
+  <details class="amend"><summary><span class="d">23 August 2026</span><span class="t">Capture opens to agents.</span></summary><div class="body">
+    <p>The operator, after the create fence stalled three fully-drafted records behind copy-paste ceremony: "this is
+    just creating too many roadblocks." The ruling stands on this document's own line — capture does not authorize
+    work. Agents may now create initiatives, tasks and bugs directly: attributed, Backlog, unranked, and inert until the
+    operator approves a plan — the gate where the conditions they wrote are read before they are armed. What stays the
+    operator's alone: projects and features, plan approval, verdicts, resume, waive, and the order. The honest cost,
+    accepted knowingly: the backlog can now grow without the operator's keystroke — agent opinions accumulate as
+    records, kept legible by attribution and the unranked tail.</p>
+  </div></details>
+
+  <details class="amend"><summary><span class="d">23 August 2026</span><span class="t">States are states, not commands.</span></summary><div class="body">
+    <p>The operator: "Authorize feels more like an action rather than a state." The lifecycle labels the record shows
+    were renamed — Authorize became <strong>Backlog</strong>, Execute became <strong>In Progress</strong>, Verdict became
+    <strong>Awaiting Verdict</strong> — because a verb in a state column reads as an order, and the worst offender read as
+    an order to the operator. The phase names keep their verbs: phases are acts, states are conditions, and the two had
+    been sharing words they should not share. Landed as one change across the stored values, the code gates, both
+    agent surfaces, the screens and these documents, because a record that says one word while the screen says another
+    is a record-versus-report defect of our own making.</p>
+  </div></details>
+
+  <details class="amend"><summary><span class="d">21 August 2026</span><span class="t">The boundaries name the procedures.</span></summary><div class="body">
+    <p>Observed problem: the operator asked where a plan says which skill to use, and nothing did — the anatomy named
+    files but not the skills, house patterns or rituals the work would follow. The best proposal on record did it by
+    instinct ("this is the house style, not a new invention"), which is exactly the kind of instinct that should be a
+    requirement instead. Part four of the anatomy now demands the procedures by name, and departures from one argued
+    like any other design decision.</p>
+  </div></details>
+
+  <details class="amend"><summary><span class="d">20 August 2026</span><span class="t">Five changes, after two days of lived use.</span></summary><div class="body">
+    <p>Proposed by the agent in a review of this document against two days of lived use, and carried in the decision by
+    which operator RT made this file the single source of the operating model:</p>
+    <p>1. <em>The activity ledger and AI investment sections stopped claiming automatic tracking.</em> Across the sixteen
+    activities ever recorded, every one was self-reported, every usage Unknown, and a dollar cost was calculated zero
+    times — the sections described a system that has never existed. Naming the precondition marks what must change
+    before the economics become real instead of letting a reader build on a falsehood.</p>
+    <p>2. <em>"The process as its own client" joined the rejected practices.</em> The one day this process governed its own
+    development produced fifteen operator decisions, nearly all about the tool, and ended with the operator close to
+    abandoning it. The model survived by finding a real client; the list now says so before anyone repeats the mistake.</p>
+    <p>3. <em>One question, one recommendation.</em> Decisions arrived as three- and four-option menus, and their
+    accumulated weight was the other half of why a sound process felt unbearable.</p>
+    <p>4. <em>An Initiative's outcome names who can do what, and why.</em> The operator called Initiatives too difficult
+    to understand. The readable ones already followed this shape; nothing required it, so the imported ones did not.</p>
+    <p>5. <em>The anatomy of a proposal.</em> Shape listed nouns — problem, boundary, risks — and the operator supplied a
+    real proposal as the actual bar. Nothing in this document captured what makes such a document decidable, so the
+    anatomy is now distilled from a proposal that worked rather than left to be rediscovered.</p>
+  </div></details>
+
+  <details class="amend"><summary><span class="d">19 August 2026</span><span class="t">What Accept does not mean.</span></summary><div class="body">
+    <p>Observed problem: the operator asked how this process tracks releases and it does not, in any document or
+    record. What changes: the lifecycle no longer implies that Accept is the end of the story. Why this is expected to
+    work better: naming the limit stops the model claiming a completeness it does not have, and marks the point at
+    which it must be designed rather than assumed. Date and decision: 19 August 2026, operator RT, who directed that the
+    gap be recorded now and left unbuilt until there is something to release.</p>
+  </div></details>
+
+  <div class="door">
+    <h3>Propose an amendment</h3>
+    <p>The same rule applies to people: <strong>anyone can propose a change, I decide, and the log records what
+    happened.</strong> If you disagree with a principle, or you work this way and want to say so, open an issue or
+    a pull request against the public repository<span class="soon"> (the link goes here once it exists)</span>, or write
+    to me through <a href="https://raguvind.com">raguvind.com</a>. Changes that are accepted show up as dated entries in
+    the log above, with the problem that prompted them.</p>
+  </div>
+</section>
+
+</div>
+
+<footer><div class="wrap">
+  <p><strong class="serif" style="color:var(--ink)">Manifesto for Operator-Led Software Development</strong> · version 1.0 · 6 September 2026</p>
+  <p>Proposed and authored by Raguvind Tharanitharan · <a href="https://raguvind.com">raguvind.com</a>. First written 19 August 2026.</p>
+  <p>This document may be freely copied in any form, in whole or in part, with attribution to its author and this address.
+  Licensed under <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">Creative Commons Attribution 4.0 (CC BY 4.0)</a>.</p>
+</div></footer>
+
+<script>
+  /* Printing: a closed <details> hides its content whatever the stylesheet says, so open every amendment for the
+     print run and close again afterwards the ones the reader had not opened. */
+  window.addEventListener('beforeprint', () => {
+    document.querySelectorAll('details.amend:not([open])').forEach(d => { d.open = true; d.dataset.printOpened = ''; });
+  });
+  window.addEventListener('afterprint', () => {
+    document.querySelectorAll('details.amend[data-print-opened]').forEach(d => { d.open = false; delete d.dataset.printOpened; });
+  });
+  /* Copy a principle's permalink on click; the hash still navigates. Nothing else runs. */
+  document.querySelectorAll('.anchor').forEach(a => {
+    a.addEventListener('click', e => {
+      const url = location.origin + location.pathname + a.getAttribute('href');
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(() => {
+          a.setAttribute('data-copied', '');
+          setTimeout(() => a.removeAttribute('data-copied'), 1400);
+        });
+      }
+    });
+  });
+</script>
+</body>
+</html>
