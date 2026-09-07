@@ -357,12 +357,13 @@
       to cover whatever seems related. <strong>Having access to a system is not permission to change it.</strong></p></li>
 
     <li class="principle" id="p3"><a class="anchor" href="#p3" title="Copy link to this principle">¶ p3</a>
-      <h3>AI agents propose and execute; only the operator decides.</h3>
+      <h3>AI agents propose and execute; the operator decides what they may decide.</h3>
       <p>AI agents are capable contributors. They are not the authority on the product. They can investigate, propose,
-      build, test, review, document, and argue with the framing. What they cannot do on their own is change the goal or
-      the priority, widen the scope in any meaningful way, or accept their own result on the operator's behalf. An agent
-      may prepare a decision; only the operator makes it. Different agents have different capabilities. None has
-      authority by default. Whatever authority an agent exercises was granted by the operator.</p></li>
+      build, test, review, document, and argue with the framing. Inside a lease, an agent makes the ordinary decisions
+      the work requires. What it cannot do on its own is change the goal or the priority, widen the scope in any
+      meaningful way, take on new risk, or accept its own result on the operator's behalf: those decisions return to the
+      operator. Different agents have different capabilities. None has authority by default. Whatever authority an agent
+      exercises was granted by the operator.</p></li>
 
     <li class="principle" id="p4"><a class="anchor" href="#p4" title="Copy link to this principle">¶ p4</a>
       <h3>One question, one recommendation.</h3>
@@ -427,8 +428,8 @@
 
 <section id="loop" class="band">
   <h2>The loop: seven states</h2>
-  <p class="lede">Work moves through seven states. Each one marks a real change in certainty or authority; none is a
-  column added for appearance. Two of them belong to the operator alone.</p>
+  <p class="lede">Work moves through seven states. Each one marks a real change in certainty or authority, not merely a
+  change in status. Two of them belong to the operator alone.</p>
   <div class="loop breakout">
     <div><i>01</i>Capture</div><div><i>02</i>Shape</div><div class="op"><i>03</i>Authorize<small>operator</small></div>
     <div><i>04</i>Execute</div><div><i>05</i>Prove</div><div class="op"><i>06</i>Accept<small>operator</small></div><div><i>07</i>Learn</div>
@@ -436,21 +437,21 @@
   <dl class="states">
     <dt>1 · Capture</dt><dd>An idea, request, defect, or concern is recorded without pretending it is ready. Capture
     protects the thought from being lost; it does not authorize work.</dd>
-    <dt>2 · Shape</dt><dd>The problem, desired outcome, boundary, dependencies, risks, alternatives, and acceptance
+    <dt>2 · Shape</dt><dd>The problem, desired outcome, proposed scope, dependencies, risks, alternatives, and acceptance
     evidence are made clear enough for a decision. Shape is finished when there is a proposal: a document the operator
     can decide on, not a form someone filled in.</dd>
     <dt>3 · Authorize <span class="st">record state: Backlog</span></dt><dd>The operator chooses whether the work should
-    proceed, its priority, its owner, its boundaries, and its investment appetite. Authorization creates a lease. In
-    the record, work waiting here shows as <em>Backlog</em>: captured, nothing authorized yet. The label describes a
+    proceed, its priority, its owner, its boundaries, and its investment appetite. Authorization creates a lease. Until
+    authorization, the record shows the work as <em>Backlog</em>: captured, but not yet authorized. The label describes a
     condition. It is not an instruction to the operator.</dd>
     <dt>4 · Execute <span class="st">record state: In Progress</span></dt><dd>The assigned AI agent works within the lease and
-    may make the ordinary implementation decisions the outcome requires. Material scope expansion, a new risk, a
-    collision with another agent, or an exhausted investment appetite returns the work to the operator.</dd>
-    <dt>5 · Prove <span class="st">record state: Awaiting Verdict</span></dt><dd>The agent produces evidence appropriate to
-    the risk. A submitted result puts the record in <em>Awaiting Verdict</em>; the judgment that follows is the
+    may make the ordinary implementation decisions the outcome requires. Any material scope expansion, new risk,
+    collision with another agent, or exhausted investment appetite returns control to the operator.</dd>
+    <dt>5 · Prove <span class="st">record state: Awaiting Verdict</span></dt><dd>The agent produces the evidence required by
+    the authorized proposal, appropriate to the risk. A submitted result puts the record in <em>Awaiting Verdict</em>; the judgment that follows is the
     operator's alone.</dd>
-    <dt>6 · Accept</dt><dd>The operator determines whether the evidence satisfies the product outcome. Rejection must
-    state what evidence or outcome is missing and sends the work back without erasing its history.</dd>
+    <dt>6 · Accept</dt><dd>The operator determines whether the evidence proves the authorized outcome. A rejection
+    states what evidence or outcome is missing and sends the work back without erasing its history.</dd>
     <dt>7 · Learn</dt><dd>Material surprises become durable knowledge: a decision, a new rule, a defect, a changed
     acceptance condition, or an improvement to this process. Learning is complete only when it can change future
     behaviour.</dd>
@@ -568,7 +569,7 @@
   <p class="lede">A short glossary. These are the terms the rest of this page assumes.</p>
   <dl class="vocab breakout">
     <div><dt>Operator</dt><dd>The one human who sets intent, grants authority, and accepts outcomes. Accountable for the system even when agents did the work.</dd></div>
-    <div><dt>AI agent</dt><dd>A capable contributor — software that plans, writes, tests, and reviews under a human's direction — that may propose and execute but never decide.</dd></div>
+    <div><dt>AI agent</dt><dd>A capable contributor — software that plans, writes, tests, and reviews under a human's direction — that may propose and execute, and decides only inside the authority it was granted.</dd></div>
     <div><dt>Intent</dt><dd>What the operator is trying to accomplish, stated as an outcome rather than a task and recorded in the structure of work: the North Star at the top, a Feature's goal beneath it, an Initiative's outcome beneath that. Every piece of work leads back up to one of these. Intent is what authority is granted for.</dd></div>
     <div><dt>Plan</dt><dd>A proposal, written to the anatomy, that an agent submits and the operator decides on. Proposed until decided; authorizes nothing by itself.</dd></div>
     <div><dt>Lease</dt><dd>Authority with edges: who may act, on what, within what scope, and until when. Created when the operator approves a plan; closed by the verdict.</dd></div>
