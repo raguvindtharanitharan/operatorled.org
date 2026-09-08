@@ -132,11 +132,13 @@ Work moves through seven states. Each one marks a real change in certainty or au
 
 1. **Capture** — An idea, request, defect, or concern is recorded without pretending it is ready. Capture protects the thought from being lost; it does not authorize work.
 2. **Shape** — The problem, desired outcome, proposed scope, dependencies, risks, alternatives, and acceptance evidence are made clear enough for a decision. Shape is finished when there is a proposal: a document the operator can decide on, not a form someone filled in.
-3. **Authorize** *(record state: Backlog)* — The operator chooses whether the work should proceed, its priority, its owner, its boundaries, and its investment appetite. Authorization creates a lease. Until authorization, the record shows the work as *Backlog*: captured, but not yet authorized. The label describes a condition. It is not an instruction to the operator.
+3. **Authorize** *(record state: Backlog)* — The operator chooses whether the work should proceed, its priority, its owner, its boundaries, and its investment appetite. What the operator authorizes is a Plan: the proposal Shape produced, read in full. Without a Plan there is nothing to authorize. Authorization creates a lease. Until authorization, the record shows the work as *Backlog*: captured, but not yet authorized. The label describes a condition. It is not an instruction to the operator.
 4. **Execute** *(record state: In Progress)* — The assigned AI agent works within the lease and may make the ordinary implementation decisions the outcome requires. Any material scope expansion, new risk, collision with another agent, or exhausted investment appetite returns control to the operator.
 5. **Prove** *(record state: Awaiting Verdict)* — The agent produces the evidence required by the authorized proposal, appropriate to the risk. A submitted result puts the record in *Awaiting Verdict*; the judgment that follows is the operator's alone.
 6. **Accept** — The operator determines whether the evidence proves the authorized outcome. A rejection states what evidence or outcome is missing and sends the work back without erasing its history.
 7. **Learn** — Material surprises become durable knowledge: a decision, a new rule, a defect, a changed acceptance condition, or an improvement to this process. Learning is complete only when it can change future behaviour.
+
+**The Plan is the spine of the loop.** Shape produces it. Authorize approves it and fixes what was authorized. The lease grants authority to execute it. Activity records what was done under it. Prove produces the evidence it required. Accept judges the result against the outcome it named. A Plan authorizes nothing by itself; it becomes binding only when the operator approves it.
 
 > **What Accept does not mean.** Accept is a judgement about proof, not about delivery. Nothing here records whether the work ever reached anyone, so an outcome that is accepted and never released is not yet a product outcome. Release is not an eighth state, on purpose: until there is something to release, a release record would be a field nobody reads. Better to say the limit out loud than have someone discover it during an incident.
 
@@ -256,6 +258,10 @@ At any moment, the operator should be able to answer:
 This is a governing document, not scripture. A change must record the observed problem that prompted it, which principle or practice changes, why the replacement is expected to work better, and the date and operator decision. AI agents may propose amendments. They may not quietly change the operating model while implementing the tooling.
 
 > **The log below is this document's own history, with the project names left in.** It was written while running two real projects: a small algorithmic trading firm called ATAM, and Ingee, the tool that implements the method. Every entry started as a problem somebody actually hit. The entries have not been cleaned up after the fact.
+
+### 8 September 2026 — The Plan is the spine of the loop.
+
+Observed problem: the method described Shape, authorization, leases, evidence, and acceptance, but did not clearly name the object connecting them. What changes: the Plan is now explicitly the thing the operator authorizes. Shape produces it; authorization fixes it; the lease grants authority to execute it; Prove produces the evidence it requires; and Accept judges the result against the outcome it names. A Plan authorizes nothing by itself — it becomes binding only when approved by the operator. Why this is expected to work better: there is now one durable reference for what was proposed, what was authorized, what was executed, and what must be proven. Date and decision: 8 September 2026, operator RT.
 
 ### 7 September 2026 — The structure of work is rooted at the Feature.
 

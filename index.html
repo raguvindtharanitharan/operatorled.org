@@ -443,8 +443,9 @@
     evidence are made clear enough for a decision. Shape is finished when there is a proposal: a document the operator
     can decide on, not a form someone filled in.</dd>
     <dt>3 · Authorize <span class="st">record state: Backlog</span></dt><dd>The operator chooses whether the work should
-    proceed, its priority, its owner, its boundaries, and its investment appetite. Authorization creates a lease. Until
-    authorization, the record shows the work as <em>Backlog</em>: captured, but not yet authorized. The label describes a
+    proceed, its priority, its owner, its boundaries, and its investment appetite. What the operator authorizes is a
+    Plan: the proposal Shape produced, read in full. Without a Plan there is nothing to authorize. Authorization creates
+    a lease. Until authorization, the record shows the work as <em>Backlog</em>: captured, but not yet authorized. The label describes a
     condition. It is not an instruction to the operator.</dd>
     <dt>4 · Execute <span class="st">record state: In Progress</span></dt><dd>The assigned AI agent works within the lease and
     may make the ordinary implementation decisions the outcome requires. Any material scope expansion, new risk,
@@ -458,6 +459,10 @@
     acceptance condition, or an improvement to this process. Learning is complete only when it can change future
     behaviour.</dd>
   </dl>
+  <p><strong>The Plan is the spine of the loop.</strong> Shape produces it. Authorize approves it and fixes what was
+  authorized. The lease grants authority to execute it. Activity records what was done under it. Prove produces the
+  evidence it required. Accept judges the result against the outcome it named. A Plan authorizes nothing by itself; it
+  becomes binding only when the operator approves it.</p>
   <div class="note"><strong>What Accept does not mean.</strong> Accept is a judgement about proof, not about delivery.
   Nothing here records whether the work ever reached anyone, so an outcome that is accepted and never released is not
   yet a product outcome. Release is not an eighth state, on purpose: until there is something to release, a release
@@ -614,6 +619,16 @@
   written while running two real projects: a small algorithmic trading firm called ATAM, and Ingee, the tool that
   implements the method. Every entry started as a problem somebody actually hit. The entries have not been cleaned up
   after the fact.</p>
+
+  <details class="amend"><summary><span class="d">8 September 2026</span><span class="t">The Plan is the spine of the loop.</span></summary><div class="body">
+    <p>Observed problem: the method described Shape, authorization, leases, evidence, and acceptance, but did not
+    clearly name the object connecting them. What changes: the Plan is now explicitly the thing the operator
+    authorizes. Shape produces it; authorization fixes it; the lease grants authority to execute it; Prove produces the
+    evidence it requires; and Accept judges the result against the outcome it names. A Plan authorizes nothing by
+    itself — it becomes binding only when approved by the operator. Why this is expected to work better: there is now
+    one durable reference for what was proposed, what was authorized, what was executed, and what must be proven. Date
+    and decision: 8 September 2026, operator RT.</p>
+  </div></details>
 
   <details class="amend"><summary><span class="d">7 September 2026</span><span class="t">The structure of work is rooted at the Feature.</span></summary><div class="body">
     <p>Observed problem: the structure of work was drawn with a North Star at its top, as though product purpose were a
