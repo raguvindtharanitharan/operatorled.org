@@ -125,7 +125,7 @@
   .quote{font-family:"Fraunces","Iowan Old Style","Palatino Linotype",Georgia,serif;font-variation-settings:"opsz" 72;font-style:italic;font-size:1.05rem;color:var(--ink);margin:.6rem 0 .2rem}
 
   /* ── two columns (operator / agents) ── */
-  .two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;align-items:start}
   .col{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:1.1rem 1.25rem}
   .col h3{margin:0 0 .5rem;font-size:1.05rem}
   .col ul{font-size:.93rem;color:var(--muted)}
@@ -155,12 +155,15 @@
   @media (max-width:480px){.eras{grid-template-columns:1fr}}
 
   /* ── structure of work + anatomy, as grids instead of walls ── */
-  .tree{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;margin:1rem 0 0}
+  /* Five cards on a six-track grid: three across, then the last two centered beneath. */
+  .tree{display:grid;grid-template-columns:repeat(6,1fr);gap:.9rem;margin:1rem 0 0}
+  .tree>div{grid-column:span 2}
+  .tree>div:nth-child(4){grid-column:2 / span 2}
   .tree div{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:.9rem 1rem}
   .tree dt{font-family:"Fraunces","Iowan Old Style","Palatino Linotype",Georgia,serif;font-variation-settings:"opsz" 72;font-weight:600;font-size:1.05rem;margin:0 0 .25rem}
   .tree dd{margin:0;font-size:.88rem;color:var(--muted)}
-  @media (max-width:760px){.tree{grid-template-columns:repeat(2,1fr)}}
-  @media (max-width:480px){.tree{grid-template-columns:1fr}}
+  @media (max-width:760px){.tree{grid-template-columns:repeat(4,1fr)}.tree>div:nth-child(4){grid-column:span 2}}
+  @media (max-width:480px){.tree{grid-template-columns:1fr}.tree>div,.tree>div:nth-child(4){grid-column:auto}}
   .anatomy{columns:2;column-gap:2rem;margin:1rem 0 0;padding-left:1.4rem}
   .anatomy li{break-inside:avoid;font-size:.95rem;color:var(--muted);margin:.4rem 0}
   .anatomy li b{color:var(--ink);font-weight:600}
@@ -469,13 +472,13 @@
     <div class="col">
       <h3>The operator owns the product</h3>
       <ul>
-        <li>defines the North Star and product goals;</li>
+        <li>defines product intent and goals;</li>
         <li>chooses which Features matter and their order;</li>
         <li>authorizes work and assigns agents;</li>
         <li>resolves ambiguity, conflicts, and risk decisions;</li>
         <li>changes or stops work when the expected value no longer justifies the investment;</li>
         <li>accepts or rejects outcomes based on evidence;</li>
-        <li>remains accountable for the system even when agents performed the work.</li>
+        <li>remains accountable for every change they accept, even when agents performed the work.</li>
       </ul>
     </div>
     <div class="col">
@@ -486,18 +489,21 @@
         <li>identify new work, defects, risks, and dependencies;</li>
         <li>challenge framing when the requested work would not achieve the goal.</li>
       </ul>
-      <p class="no"><strong>Never silently:</strong> change the goal or priority · expand scope materially · accept their own
-      outcome · hide failed attempts, rework, uncertainty, or cost · declare a dependency resolved without evidence ·
-      treat access as permission.</p>
+      <p class="no"><strong>Without operator authority, never:</strong> change the goal or priority · expand scope materially · take on new risk.</p>
+      <p class="no"><strong>Never, under any authority:</strong> accept their own outcome.</p>
+      <p class="no"><strong>Never hide:</strong> failed attempts · rework · uncertainty · cost.</p>
+      <p class="no"><strong>Evidence governs claims:</strong> an agent does not declare a dependency resolved without evidence.</p>
+      <p class="no"><strong>Access is not authority:</strong> having access to a system does not give an agent permission to change it.</p>
     </div>
   </div>
 
   <h3>The structure of work</h3>
-  <p>Every meaningful item leads upward to the project's reason for existing.</p>
+  <p>Every meaningful item leads upward to the intent it serves. Product purpose, the reason the product exists, is
+  context a project may record; it is not a level of this structure. The method begins when purpose becomes a concrete
+  product outcome worth pursuing.</p>
   <dl class="tree breakout">
-    <div><dt>North Star</dt><dd>The durable reason the product exists. Not a milestone; never complete. The test applied to every Feature.</dd></div>
-    <div><dt>Feature</dt><dd>A product-level capability with a goal stated as an outcome, a way to recognize success, an accountable operator, and a state derived from the work below it.</dd></div>
-    <div><dt>Spec <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint);font-weight:400">optional</span></dt><dd>Short, and only for when the design decisions are the hard part. A Draft carries no authority. Freezing it is the operator's act. Changing a frozen Spec is an amendment: reasoned, versioned, and visible.</dd></div>
+    <div><dt>Feature</dt><dd>A product-level outcome worth pursuing, stated with a clear goal, why it matters, and a way to recognize success. Its state is derived from the work below it, and that work exists to advance the outcome.</dd></div>
+    <div><dt>Spec <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint);font-weight:400">optional artifact</span></dt><dd>A short design record attached to a Feature when important decisions need to survive across multiple Initiatives. It carries no authority on its own. Once the operator freezes it, changing it requires a visible amendment.</dd></div>
     <div><dt>Initiative</dt><dd>A coherent body of change advancing one Feature — the normal level of authorization. Its outcome names who can do what once accepted, and why.</dd></div>
     <div><dt>Task</dt><dd>Bounded work with a stated expected result. Work outside the approved scope becomes a new Task, not an extra step slipped into the current one.</dd></div>
     <div><dt>Bug</dt><dd>A record that the software did something other than what was intended. Bugs keep their own history, because they show where both the product and the process are going wrong.</dd></div>
@@ -568,9 +574,9 @@
   <h2>The vocabulary</h2>
   <p class="lede">A short glossary. These are the terms the rest of this page assumes.</p>
   <dl class="vocab breakout">
-    <div><dt>Operator</dt><dd>The one human who sets intent, grants authority, and accepts outcomes. Accountable for the system even when agents did the work.</dd></div>
+    <div><dt>Operator</dt><dd>The one human who sets intent, grants authority, and accepts outcomes. Accountable for every change they accept, even when agents did the work.</dd></div>
     <div><dt>AI agent</dt><dd>A capable contributor — software that plans, writes, tests, and reviews under a human's direction — that may propose and execute, and decides only inside the authority it was granted.</dd></div>
-    <div><dt>Intent</dt><dd>What the operator is trying to accomplish, stated as an outcome rather than a task and recorded in the structure of work: the North Star at the top, a Feature's goal beneath it, an Initiative's outcome beneath that. Every piece of work leads back up to one of these. Intent is what authority is granted for.</dd></div>
+    <div><dt>Intent</dt><dd>What the operator is trying to accomplish, stated as an outcome rather than a task and recorded in the structure of work. A Feature records the product outcome being pursued; an Initiative records the outcome of the change beneath it. Every piece of work leads upward to the intent it serves. Intent is what authority is granted for.</dd></div>
     <div><dt>Plan</dt><dd>A proposal, written to the anatomy, that an agent submits and the operator decides on. Proposed until decided; authorizes nothing by itself.</dd></div>
     <div><dt>Lease</dt><dd>Authority with edges: who may act, on what, within what scope, and until when. Created when the operator approves a plan; closed by the verdict.</dd></div>
     <div><dt>Activity</dt><dd>One recorded action by an agent under a lease, against one plan step. Not a log line: an authorized action with its provenance attached.</dd></div>
@@ -580,7 +586,7 @@
     <div><dt>Decision</dt><dd>Any recorded operator act that changes direction, scope, authority, or acceptance. Append-only. The reason is part of the record.</dd></div>
     <div><dt>The loop</dt><dd>Capture → Shape → Authorize → Execute → Prove → Accept → Learn. Authorize and Accept are the operator's alone.</dd></div>
     <div><dt>Backlog · In Progress · Awaiting Verdict</dt><dd>The three record states a work item shows: captured with nothing authorized; executing under a lease; submitted and awaiting the operator.</dd></div>
-    <div><dt>North Star · Feature · Spec · Initiative · Task · Bug</dt><dd>The structure of work, top to bottom — every item leading upward to the reason the product exists.</dd></div>
+    <div><dt>Feature · Initiative · Task · Bug</dt><dd>The structure of work, top to bottom — every item leading upward to the intent it serves. A Feature may also carry an optional Spec when design decisions need to survive across multiple Initiatives.</dd></div>
   </dl>
 </section>
 
@@ -609,6 +615,24 @@
   written while running two real projects: a small algorithmic trading firm called ATAM, and Ingee, the tool that
   implements the method. Every entry started as a problem somebody actually hit. The entries have not been cleaned up
   after the fact.</p>
+
+  <details class="amend"><summary><span class="d">7 September 2026</span><span class="t">The structure of work is rooted at the Feature.</span></summary><div class="body">
+    <p>Observed problem: the structure of work was drawn with a North Star at its top, as though product purpose were a
+    level of the hierarchy. It never was. It is not authorized, leased, executed, proved, accepted, or closed; the
+    reference implementation records it as text on the project, not as work. Meanwhile the method had begun treating
+    "intent" as its first concept, and placing product purpose above the Feature blurred where actionable intent is
+    actually recorded.</p>
+    <p>What changes: the structure of work is Feature → Initiative → Task and Bug, with a Spec as an optional design
+    record attached to a Feature. The Feature is the root of recorded intent and must state why it matters in its own
+    words; that is where "why are we doing this work?" is answered. Product purpose remains context a project may
+    record, outside the structure of work; the method begins when purpose becomes a concrete product outcome worth
+    pursuing. What is given up: the recorded criterion above the Feature ("does it move the product toward the North
+    Star?"). Choosing which Features matter was always the operator's act, and it now rests on the operator's judgment
+    and the Feature's recorded reason rather than on a test against a higher record.</p>
+    <p>Why this is expected to work better: every level of the tree is now something that moves through the loop, the
+    method stops prescribing a product-purpose artifact it never governed, and the reference implementation and the
+    description finally match. Date and decision: 7 September 2026, operator RT.</p>
+  </div></details>
 
   <details class="amend"><summary><span class="d">6 September 2026</span><span class="t">Two values, tested against the method.</span></summary><div class="body">
     <p>Observed problem: preparing the values for a public reader, each pair was checked against what the rest of this
