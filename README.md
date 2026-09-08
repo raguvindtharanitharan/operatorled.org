@@ -8,8 +8,12 @@ that defines Operator-Led Software Development and coins the term.
 > agents may do the work, but the operator remains accountable for every change that is accepted into
 > the codebase. Nothing closes without the operator's verdict.
 
-The whole site is one file, `index.html`. No build step, no framework, no analytics, no forms. Fonts
-load from Google Fonts; everything else is in the file. Open it in a browser and you have the site.
+The site is one page, `index.html`. No build step, no framework, no analytics, no forms. Fonts load
+from Google Fonts; everything else is in the file. Open it in a browser and you have the site.
+
+`manifesto.md` is the same text in Markdown, for reading here, quoting, forking, and translating. The
+page is canonical; when the text changes, both files change in the same commit. It is also served at
+[operatorled.org/manifesto.md](https://operatorled.org/manifesto.md).
 
 ## What is in the document
 
@@ -37,8 +41,8 @@ it carries the four things every log entry carries:
 3. why the replacement is expected to work better;
 4. what it would say instead.
 
-Accepted changes appear as dated entries in the amendment log on the page, and the version and date
-in the header and footer move with them. Rejected proposals stay visible in the issue history.
+Accepted changes appear as dated entries in the amendment log, on the page and in `manifesto.md`, and
+the version and date in the header and footer move with them. Rejected proposals stay visible in the issue history.
 
 ## Provenance
 
