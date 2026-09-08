@@ -231,7 +231,7 @@ A short glossary. These are the terms the rest of this document assumes.
 - **Intent** — What the operator is trying to accomplish, stated as an outcome rather than a task and recorded in the structure of work. A Feature records the product outcome being pursued; an Initiative records the outcome of the change beneath it. Every piece of work leads upward to the intent it serves. Intent is what authority is granted for.
 - **Plan** — A proposal, written to the anatomy, that an agent submits and the operator decides on. Proposed until decided; authorizes nothing by itself.
 - **Lease** — Authority with edges: who may act, on what, within what scope, and until when. Created when the operator approves a plan; closed by the verdict.
-- **Activity** — One recorded action by an agent under a lease, against one plan step. Not a log line: an authorized action with its provenance attached.
+- **Activity** — One recorded action by an agent under a lease, against the Plan it executes. Not a log line: an authorized action with its provenance attached.
 - **Evidence** — Proof appropriate to the risk, attached to the acceptance conditions fixed before the work began.
 - **Submission** — The agent's account of a result: what was done, what was not, and the evidence for each condition. Puts the work in Awaiting Verdict.
 - **Verdict** — The operator's judgment on a submission: accept, reject, redirect, or stop, with a reason in the operator's own words.
@@ -262,6 +262,8 @@ This is a governing document, not scripture. A change must record the observed p
 ### 8 September 2026 — The Plan is the spine of the loop.
 
 Observed problem: the method described Shape, authorization, leases, evidence, and acceptance, but did not clearly name the object connecting them. What changes: the Plan is now explicitly the thing the operator authorizes. Shape produces it; authorization fixes it; the lease grants authority to execute it; Prove produces the evidence it requires; and Accept judges the result against the outcome it names. A Plan authorizes nothing by itself — it becomes binding only when approved by the operator. Why this is expected to work better: there is now one durable reference for what was proposed, what was authorized, what was executed, and what must be proven. Date and decision: 8 September 2026, operator RT.
+
+Note, same day: the Activity vocabulary entry said an Activity is recorded "against one plan step." That is the reference implementation's discipline, not the method's. The method requires that an Activity happen under the authority of the approved Plan; the entry now says "against the Plan it executes."
 
 ### 7 September 2026 — The structure of work is rooted at the Feature.
 
