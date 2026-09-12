@@ -8,8 +8,21 @@ that defines Operator-Led Software Development and coins the term.
 > agents may do the work, but the operator remains accountable for every change that is accepted into
 > the codebase. Nothing closes without the operator's verdict.
 
-The site is one page, `index.html`. No build step, no framework, no analytics, no forms. Fonts load
+The manifesto is one page, `index.html`, with `robots.txt`, `sitemap.xml`, and `404.html` supporting
+crawling and missing-page handling. No build step, no framework, no forms. Umami Cloud measures
+visits through the site's dedicated account. Fonts load
 from Google Fonts; everything else is in the file. Open it in a browser and you have the site.
+
+Deploy all root files together. On Cloudflare Pages, a top-level `404.html` enables missing-page
+handling instead of the default single-page-app fallback. If another host or a Worker serves the
+files, configure its missing-page handler to serve `404.html` with HTTP 404; do not rewrite missing
+paths to `index.html` with HTTP 200. See the
+[Cloudflare Pages routing documentation](https://developers.cloudflare.com/pages/configuration/serving-pages/).
+
+After deployment, verify `/robots.txt` returns HTTP 200 as text, `/sitemap.xml` returns HTTP 200 as
+XML with `https://operatorled.org/` as its only URL, and both `/missing-page-check` and
+`/missing/nested-page-check` return HTTP 404 with the custom page and a working home link.
+The sitemap intentionally excludes the error page and does not invent a modification date.
 
 `manifesto.md` is the same text in Markdown, for reading here, quoting, forking, and translating. The
 page is canonical; when the text changes, both files change in the same commit. It is also served at
