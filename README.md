@@ -28,6 +28,18 @@ The sitemap intentionally excludes the error page and does not invent a modifica
 page is canonical; when the text changes, both files change in the same commit. It is also served at
 [operatorled.org/manifesto.md](https://operatorled.org/manifesto.md).
 
+## Deploying
+
+The site is hosted on Cloudflare Pages (project `operatorled-org`), connected to this repository.
+Every push to `main` deploys automatically: there is no build command, the root of the repository is
+the site, and the change is live within a minute or two. Nothing else has to be run or clicked.
+
+To redeploy: commit, push to `main`, wait, then run the verification above. If a deployment fails or
+a bad version goes live, open the Cloudflare dashboard, Workers & Pages, `operatorled-org`, and use
+"Retry deployment" or "Rollback" on the deployment list. The domain `operatorled.org` and `www` are
+attached to the project as custom domains; the `operatorled-org.pages.dev` alias serves the same
+files.
+
 ## What is in the document
 
 - The definition, and why the method exists: what changed in how software is built, and what broke.
