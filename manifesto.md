@@ -1,5 +1,11 @@
 # Manifesto for Operator-Led Software Development
 
+## Why a new development process for AI agents?
+
+AI agents can now perform substantial development work, but the processes around them still largely assume humans do the work and review the results. As agents produce more code, review alone becomes an increasingly difficult way to maintain control.
+
+**The proposed method**
+
 **Operator-Led Software Development** is a way of building software in which a human operator sets intent, grants bounded authority to AI agents, judges the evidence, and accepts the outcome. AI agents may do the work, but the operator remains accountable for every change that is accepted into the codebase. **Nothing closes without the operator's verdict.**
 
 > **The operator is in command** — the final authority, whether or not their hands are on the controls.
@@ -8,6 +14,7 @@ Proposed and authored by **Raguvind Tharanitharan** · [raguvind.com](https://ra
 The term **Operator-Led Software Development** is coined in this document
 First written **19 August 2026**, while running two real projects
 Published **7 September 2026** · version 1.0
+Last revised **17 September 2026**
 
 [Read the incidents that produced this →](https://raguvind.com/writing/faster-than-you-can-follow)
 
@@ -17,16 +24,41 @@ Published **7 September 2026** · version 1.0
 
 ## 1 · Why this exists: what changed, and what broke
 
+Today, we use these agents within familiar development workflows: assign a task, let the agent implement it, review the changes, run tests, and approve the result.
+
+But this workflow leaves important questions unanswered. What decisions was the agent authorized to make? Did it stay within the agreed scope? What evidence proves the intended outcome was achieved? Who explicitly accepted the result?
+
+The missing piece is not another coding agent. It is an operating model that connects intent, authority, execution, evidence, and acceptance.
+
 Every software process is built around two questions: who does the work, and what needs coordinating. For decades, the first answer stayed the same: **people**. What changed was how their work was coordinated. **AI agents** change the first answer.
 
-- **Waterfall** (1970s →) — Humans build, phase by phase. The process coordinates *documents and handoffs*, assuming change is expensive so everything is decided up front.
-- **Agile** (2001 →) — Humans build, in small iterating teams. The process coordinates *people and feedback*, assuming the team can inspect every change it makes.
-- **DevOps** (2009 →) — The people who write the software also run it. The process coordinates *writing code and shipping it* through CI/CD pipelines: automated tests, automated releases, updates many times a day. A person still writes every change.
-- **AI agents** (now) — AI agents author a growing share of the change; a human sets intent and judges. The process must coordinate *authority*: who may act, on what, and what proved it.
+- **Waterfall** (1970s →) — Coordinates development through planned phases, documents, and handoffs.
+- **Agile** (2001 →) — Coordinates iterative development through teams, collaboration, and feedback.
+- **DevOps** (2009 →) — Connects development and operations through automation, continuous integration, and delivery.
+- **AI agents** (now) — AI agents can perform substantial development work. The challenge increasingly includes establishing authority, verifying outcomes, and preserving accountability.
+
+### Why existing development processes are not enough for AI agents
+
+Existing tools solve important parts of the development process. But they do not automatically establish an end-to-end record of authority and acceptance.
+
+| Existing tool | What it provides | What it does not automatically establish |
+|---|---|---|
+| Issue trackers | Record what needs to be done. | What decisions an agent is authorized to make. |
+| Coding agents | Plan and execute development work. | Coding agents may provide permission controls, approval prompts, and activity logs. These do not, by themselves, establish an end-to-end process connecting what was authorized, what the agent did, the evidence produced, and the operator's final verdict. |
+| Pull requests | Present changes for review. | Visibility into every consequential decision made during implementation. |
+| CI/CD | Runs automated checks and delivery workflows. | Proof that the original product outcome was achieved. |
+
+These are useful tools. The gap is not that they lack controls, but that those controls do not automatically form a single, durable chain from what was intended to what was authorized, executed, proven, and accepted.
 
 **What broke is review as the mechanism of control.** AI agents can now plan, implement, test, review, and document work faster than one person can read it. In one four-day stretch on my own project, agents produced 144 small scripts against a live system. Each one carried a decision nobody had reviewed, because nobody reviews 144 of anything. Every skimmed *"looks good"* accepts decisions the operator did not actually judge, and nothing records that it happened. Tickets and chat transcripts were built to coordinate humans. They preserve the conversation, but not a durable record of intent, authority, action, and evidence.
 
 > Trust changes hands one reflexive approval at a time, until the person accountable for the project no longer knows what is in it.
+
+### What Operator-Led Software Development changes
+
+The answer is not to watch every keystroke or make agents wait for permission at every step. A human operator sets the intent and approves a Plan that names, before work begins, the outcome and the evidence that will prove it. Approval grants a bounded Lease: the agent executes within it, makes the ordinary decisions the work requires, and returns to the operator when a boundary is crossed. Its actions and evidence stay on the record. The operator judges the result against the approved Plan and records a verdict.
+
+**Agentic tools determine what an agent *can* do. This method establishes what it *may* do, under whose authority, and what must be proven before the outcome is accepted.** It does not replace coding agents, issue trackers, or CI/CD; it is the operating model for using them when agents perform the work.
 
 **Two bets I am making**
 
@@ -34,13 +66,7 @@ Every software process is built around two questions: who does the work, and wha
 
 **Second:** much of the software written over the last fifty years will be rewritten, replaced, or retired in the same window, and AI will supply both the pressure and the means: it will find weaknesses in old code faster than people can patch them by hand, and it will make translating that code cheap.
 
-Both bets lead to the same place: code will arrive faster than humans can reasonably inspect it. And [today's evidence](https://www.veracode.com/resources/analyst-reports/2025-genai-code-security-report/) says AI-generated code carries *more* security vulnerabilities than human-written code, not fewer. Whoever is accountable for a codebase will need a way to decide which changes are accepted into it. That's what this is for.
-
-This manifesto describes a software development lifecycle, from intent to acceptance, for the way work is now actually done: **one human operator in command of several AI agents.** The agents get real autonomy inside the authority they are granted. They do not get to decide what the product should become, how much risk is acceptable, or whether the result is good enough.
-
-The point is not to keep agents busy. The point is to produce accepted outcomes: the operator's intent turned into changes the operator has accepted, with authority granted deliberately, every action and its cost visible, decisions that can be found later, and evidence that lasts.
-
-That does not mean watching every keystroke. The operator holds purpose, boundaries, risk, and acceptance; the agent has enough autonomy to finish the work it was given, and no implied authority to redefine it.
+Both bets lead to the same place: code will arrive faster than humans can reasonably inspect it. [Security research](https://www.veracode.com/resources/analyst-reports/2025-genai-code-security-report/) has identified vulnerabilities in AI-generated code, reinforcing the need to verify changes before accepting them. Whoever is accountable for a codebase will need a way to decide which changes are accepted into it. That's what this is for.
 
 ## 2 · What we value
 
@@ -97,7 +123,7 @@ An AI agent should push back on weak framing while the work is still being shape
 <a id="p7"></a>
 ### p7 · "It should work" is not evidence.
 
-Evidence should match the risk: tests, observed behaviour, measurements, review findings, a demonstration someone else can reproduce. Decide what will count as proof before the work starts, and make sure the checks can actually fail. A confident sentence in an approved plan is not evidence, however well it is written.
+Evidence should match the risk: tests, observed behaviour, measurements, review findings, a demonstration someone else can reproduce. Evidence must be inspectable or reproducible, not merely reported by the agent. Decide what will count as proof before the work starts, and make sure the checks can actually fail. A confident sentence in an approved plan is not evidence, however well it is written.
 
 <a id="p8"></a>
 ### p8 · Work is closed by evidence and acceptance, not by saying so.
@@ -124,11 +150,13 @@ Every field, status, meeting, and metric has to help someone authorize, execute,
 
 This method covers proposing, authorizing, executing, proving, and accepting. Its job ends when an outcome is accepted. What the finished system does in production is the business of that system's own controls, which have to work whether or not the build tooling is reachable. That is a boundary, not a gap. A method that also tried to govern every system it helped build would be an opinion about running a business bolted onto an opinion about building one.
 
-## 4 · The loop: seven states
+## 4 · The loop: seven phases
 
-Work moves through seven states. Each one marks a real change in certainty or authority, not merely a change in status. Two of them belong to the operator alone.
+Work moves through seven phases. Each marks a real change in certainty or authority, not merely a change in status. Two belong to the operator alone.
 
 **Capture → Shape → Authorize** (operator) **→ Execute → Prove → Accept** (operator) **→ Learn**
+
+*The loop is not strictly linear. A rejection returns work for correction with its history intact.*
 
 1. **Capture** — An idea, request, defect, or concern is recorded without pretending it is ready. Capture protects the thought from being lost; it does not authorize work.
 2. **Shape** — The problem, desired outcome, proposed scope, dependencies, risks, alternatives, and acceptance evidence are made clear enough for a decision. Shape is finished when there is a proposal: a document the operator can decide on, not a form someone filled in.
@@ -140,7 +168,15 @@ Work moves through seven states. Each one marks a real change in certainty or au
 
 **The Plan is the spine of the loop.** Shape produces it. Authorize approves it and fixes what was authorized. The lease grants authority to execute it. Activity records what was done under it. Prove produces the evidence it required. Accept judges the result against the outcome it named. A Plan authorizes nothing by itself; it becomes binding only when the operator approves it.
 
-> **What Accept does not mean.** Accept is a judgement about proof, not about delivery. Nothing here records whether the work ever reached anyone, so an outcome that is accepted and never released is not yet a product outcome. Release is not an eighth state, on purpose: until there is something to release, a release record would be a field nobody reads. Better to say the limit out loud than have someone discover it during an incident.
+**An example, not a template.** An agent is asked to improve login performance without changing authentication behaviour.
+
+- **Plan:** Reduce login latency below an agreed threshold without changing authentication behaviour. The Plan names, before work begins, the measurements and regression tests that will count as evidence.
+- **Authorize:** The operator approves the Plan and grants a bounded Lease: this agent, this change, this scope.
+- **Execute:** The agent implements the change within the authorized scope. A change to authentication behaviour is outside it and returns to the operator.
+- **Prove:** The agent submits its performance measurements and regression test results against the conditions the Plan named.
+- **Accept:** The operator judges the evidence against the approved Plan and records a verdict.
+
+> **What Accept does not mean.** Accept is a judgement about proof, not about delivery. Nothing here records whether the work ever reached anyone, so an outcome that is accepted and never released is not yet a product outcome. Release is not an eighth phase, on purpose: until there is something to release, a release record would be a field nobody reads. Better to say the limit out loud than have someone discover it during an incident.
 
 ## 5 · The operating model
 
@@ -173,7 +209,7 @@ Work moves through seven states. Each one marks a real change in certainty or au
 
 ### The structure of work
 
-Every meaningful item leads upward to the intent it serves. Product purpose, the reason the product exists, is context a project may record; it is not a level of this structure. The method begins when purpose becomes a concrete product outcome worth pursuing.
+Every meaningful item leads upward to the intent it serves. Product purpose, the reason the product exists, is context a project may record; it is not a level of this structure. The method begins when purpose becomes a concrete product outcome worth pursuing. The structure is Feature → Initiative → Task and Bug; a Spec is an optional design record attached to a Feature, not a level of its own.
 
 - **Feature** — A product-level outcome worth pursuing, stated with a clear goal, why it matters, and a way to recognize success. Its state is derived from the work below it, and that work exists to advance the outcome.
 - **Spec** *(optional artifact)* — A short design record attached to a Feature when important decisions need to survive across multiple Initiatives. It carries no authority on its own. Once the operator freezes it, changing it requires a visible amendment.
@@ -183,7 +219,7 @@ Every meaningful item leads upward to the intent it serves. Product purpose, the
 
 ### The anatomy of a proposal
 
-Shape produces a document, not a form. Its parts, in the order a reader meets them. The last three are written during and after the build.
+Shape produces a document, not a form. Its parts, in the order a reader meets them. The last three are written during and after the build. The depth of a proposal should match the scope and risk of the work. The obligation is to make the decision possible, not to fill every heading.
 
 1. **In plain words**, before any detail: a story a non-technical reader can follow.
 2. **Measurements taken today**, at a named commit, not impressions.
@@ -196,11 +232,11 @@ Shape produces a document, not a form. Its parts, in the order a reader meets th
 9. **Done when, as it finished**: gates that were not met are marked, not passed over.
 10. **What this does not fix**: the limit, stated plainly.
 
-Two rules go with it. **The contract freezes but the document lives**: what the operator authorized is fixed at approval, while the proposal itself keeps growing alongside the project. And **the headings are not what make a proposal trustworthy.** Numbers taken from a real commit, a correction left visible, a gate marked as not met: those are.
+Two rules go with it. **The contract freezes but the document lives**: approval fixes the scope, boundaries, and acceptance conditions. The Plan may accumulate implementation notes, discoveries, and evidence. Changing the approved contract requires a new operator Decision, and the authorized change is recorded in the Plan. Acceptance is judged against the approved contract, including any authorized amendments. **A proposal earns trust through evidence, not formatting.** Numbers taken from a real commit, a correction left visible, a gate marked as not met: those are what make it trustworthy.
 
 ### Two ledgers beside the work
 
-The work hierarchy records what is being done and why. Two append-only ledgers record what happened around it. The **activity ledger** holds every AI agent run against a work item: which agent, which provider and model, when it started and finished, how it ended, what it cost where the provider reports cost, and what evidence it produced (or why it produced none). The **decision ledger** holds every decision that changed direction, scope, authority, priority, or accepted risk, with the question, the options, the operator's choice and reason, and what it affected. Cost is tracked automatically only when agents run through an API that reports usage. An agent working in a terminal records its own runs, so the ledger holds what the agent reported. That is why hiding cost or rework is on the short list of things an agent may never do.
+The work hierarchy records what is being done and why. Two append-only ledgers record what happened around it. The **activity ledger** holds every AI agent run against a work item: which agent acted, under which Plan, when it started and finished, how it ended, what it cost where the cost is known, and what evidence it produced (or why it produced none). The **decision ledger** holds every decision that changed direction, scope, authority, priority, or accepted risk, with the question, the options, the operator's choice and reason, and what it affected. The method requires these two records. How they are filled is an implementation matter: in the reference implementation, Ingee, the activity ledger also records the provider and model, and cost can be collected automatically only when an agent runs through an API that reports usage. An agent working in a terminal records its own runs, so the ledger holds what the agent reported, and a cost the provider did not report stays unknown rather than zero. That is why hiding cost or rework is on the short list of things an agent may never do.
 
 ### Two kinds of dependency
 
@@ -258,6 +294,14 @@ At any moment, the operator should be able to answer:
 This is a governing document, not scripture. A change must record the observed problem that prompted it, which principle or practice changes, why the replacement is expected to work better, and the date and operator decision. AI agents may propose amendments. They may not quietly change the operating model while implementing the tooling.
 
 > **The log below is this document's own history, with the project names left in.** It was written while running two real projects: a small algorithmic trading firm called ATAM, and Ingee, the tool that implements the method. Every entry started as a problem somebody actually hit. The entries have not been cleaned up after the fact.
+
+### 17 September 2026 — The problem before the method, and the Plan as a contract.
+
+Observed problem: the first reader from outside the two projects could not tell from the page what problem this solves or how it differs from the agentic coding tools people already use. The argument for it was spread across Section 1 and repeated itself; "seven states" and the three record states still shared a word the 23 August entry had separated; the structure of work was drawn as a row of five cards, with the optional Spec looking like a level of its own; and the two-ledgers passage could still be read as claiming automatic cost tracking, which the 20 August entry had corrected once already.
+
+What changes: the page opens by asking why a new development process is needed for AI agents, and states the problem before the definition. Section 1 runs in one order — what changed, the historical comparison (with the absolute claims about Agile and DevOps removed), what existing tools provide and do not automatically establish, the 144-script incident, what this method changes, the two bets — and the security citation is framed as evidence of a specific risk rather than a universal comparison. The loop is seven *phases* with three record states, a note says it is not strictly linear, and one worked example follows the Plan-as-spine paragraph. The anatomy of a proposal gains proportionality: the obligation is to make the decision possible, not to fill every heading. Its two rules now say what freezes at approval, that changing the approved contract is a new operator Decision recorded in the Plan, and that acceptance is judged against the approved contract including authorized amendments. Principle 7 adds that evidence must be inspectable or reproducible, not merely reported by the agent. The structure of work is drawn as a tree with the Spec attached to the Feature. The ledgers passage separates what the method requires from what the reference implementation records.
+
+Why this is expected to work better: a reader meets the problem, the gap, and the method in that order and in one place, and the document uses its own terms — phases, record states, contract, Decision — the way the record does. What is given up: the concluding paragraphs after the two bets, whose scope statements already lived in the operating model and the vocabulary. Same day, presentation only: section links open from a Contents button on narrow screens, headings clear the sticky bar when navigated to, the permalink says *copied!* or *copy failed*, and readers who prefer reduced motion get none. Date and decision: 17 September 2026, operator RT, after the first external review.
 
 ### 8 September 2026 — The Plan is the spine of the loop.
 
@@ -329,6 +373,6 @@ The same rule applies to people: **anyone can propose a change, I decide, and th
 
 ---
 
-**Manifesto for Operator-Led Software Development** · version 1.0 · 7 September 2026
+**Manifesto for Operator-Led Software Development** · version 1.0 · published 7 September 2026 · last revised 17 September 2026
 Proposed and authored by Raguvind Tharanitharan · [raguvind.com](https://raguvind.com). First written 19 August 2026.
 This document may be freely copied in any form, in whole or in part, with attribution to its author and this address. Licensed under [Creative Commons Attribution 4.0 (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
