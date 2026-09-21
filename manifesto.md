@@ -14,7 +14,7 @@ Proposed and authored by **Raguvind Tharanitharan** · [raguvind.com](https://ra
 The term **Operator-Led Software Development** is coined in this document
 First written **19 August 2026**, while running two real projects
 Published **7 September 2026** · version 1.0
-Last revised **17 September 2026**
+Last revised **21 September 2026**
 
 [Read the incidents that produced this →](https://raguvind.com/writing/faster-than-you-can-follow)
 
@@ -209,11 +209,11 @@ Work moves through seven phases. Each marks a real change in certainty or author
 
 ### The structure of work
 
-Every meaningful item leads upward to the intent it serves. Product purpose, the reason the product exists, is context a project may record; it is not a level of this structure. The method begins when purpose becomes a concrete product outcome worth pursuing. The structure is Feature → Initiative → Task and Bug; a Spec is an optional design record attached to a Feature, not a level of its own.
+Every meaningful item leads upward to the intent it serves. Product purpose, the reason the product exists, is context a project may record; it is not a level of this structure. The method begins when purpose becomes a concrete product outcome worth pursuing. The structure is Feature → Story → Task and Bug; a Spec is an optional design record attached to a Feature, not a level of its own.
 
 - **Feature** — A product-level outcome worth pursuing, stated with a clear goal, why it matters, and a way to recognize success. Its state is derived from the work below it, and that work exists to advance the outcome.
-- **Spec** *(optional artifact)* — A short design record attached to a Feature when important decisions need to survive across multiple Initiatives. It carries no authority on its own. Once the operator freezes it, changing it requires a visible amendment.
-- **Initiative** — A coherent body of change advancing one Feature — the normal level of authorization. Its outcome names who can do what once accepted, and why.
+- **Spec** *(optional artifact)* — A short design record attached to a Feature when important decisions need to survive across multiple Stories. It carries no authority on its own. Once the operator freezes it, changing it requires a visible amendment.
+- **Story** — A bounded, verifiable outcome that advances one Feature, and the unit the operator authorizes and accepts. User-facing or technical, it states what becomes true when it is done, not how; it defines what it includes, what it excludes, and the conditions the operator will judge its evidence against. Delivered through an operator-approved Plan, one approved and current at a time; rejected and superseded Plans keep their history. Not a change, and not sized by a sprint: as large as one decision to authorize, never estimated in points.
 - **Task** — Bounded work with a stated expected result. Work outside the approved scope becomes a new Task, not an extra step slipped into the current one.
 - **Bug** — A record that the software did something other than what was intended. Bugs keep their own history, because they show where both the product and the process are going wrong.
 
@@ -264,7 +264,7 @@ A short glossary. These are the terms the rest of this document assumes.
 
 - **Operator** — The one human who sets intent, grants authority, and accepts outcomes. Accountable for every change they accept, even when agents did the work.
 - **AI agent** — A capable contributor — software that plans, writes, tests, and reviews under a human's direction — that may propose and execute, and decides only inside the authority it was granted.
-- **Intent** — What the operator is trying to accomplish, stated as an outcome rather than a task and recorded in the structure of work. A Feature records the product outcome being pursued; an Initiative records the outcome of the change beneath it. Every piece of work leads upward to the intent it serves. Intent is what authority is granted for.
+- **Intent** — What the operator is trying to accomplish, stated as an outcome rather than a task and recorded in the structure of work. A Feature records the product outcome being pursued; a Story records the bounded outcome beneath it. Every piece of work leads upward to the intent it serves. Intent is what authority is granted for.
 - **Plan** — A proposal, written to the anatomy, that an agent submits and the operator decides on. Proposed until decided; authorizes nothing by itself.
 - **Lease** — Authority with edges: who may act, on what, within what scope, and until when. Created when the operator approves a plan; closed by the verdict.
 - **Activity** — One recorded action by an agent under a lease, against the Plan it executes. Not a log line: an authorized action with its provenance attached.
@@ -274,7 +274,7 @@ A short glossary. These are the terms the rest of this document assumes.
 - **Decision** — Any recorded operator act that changes direction, scope, authority, priority, or accepted risk. Append-only. The reason is part of the record.
 - **The loop** — Capture → Shape → Authorize → Execute → Prove → Accept → Learn. Authorize and Accept are the operator's alone.
 - **Backlog · In Progress · Awaiting Verdict** — The three record states a work item shows: captured with nothing authorized; executing under a lease; submitted and awaiting the operator.
-- **Feature · Initiative · Task · Bug** — The structure of work, top to bottom — every item leading upward to the intent it serves. A Feature may also carry an optional Spec when design decisions need to survive across multiple Initiatives.
+- **Feature · Story · Task · Bug** — The structure of work, top to bottom — every item leading upward to the intent it serves. A Feature may also carry an optional Spec when design decisions need to survive across multiple Stories.
 
 ## 7 · The final test
 
@@ -294,6 +294,14 @@ At any moment, the operator should be able to answer:
 This is a governing document, not scripture. A change must record the observed problem that prompted it, which principle or practice changes, why the replacement is expected to work better, and the date and operator decision. AI agents may propose amendments. They may not quietly change the operating model while implementing the tooling.
 
 > **The log below is this document's own history, with the project names left in.** It was written while running two real projects: a small algorithmic trading firm called ATAM, and Ingee, the tool that implements the method. Every entry started as a problem somebody actually hit. The entries have not been cleaned up after the fact.
+
+### 21 September 2026 — The Initiative is renamed the Story.
+
+Observed problem: in Jira and the portfolio tools this document's readers come from, an Initiative sits *above* Epics and Features — a quarter-long effort spanning many of them. This document put it below the Feature, so the word pointed the wrong way on first sight, and the reference implementation was about to give that level a permanent identifier.
+
+What changes: the level is the **Story**, `STORY-001`. A Story is a bounded, verifiable outcome that advances one Feature, and the unit the operator authorizes and accepts. It may be user-facing or technical; either way it states what becomes true when it is done, not how. It defines what it includes, what it excludes, and the conditions the operator will judge its evidence against. It is delivered through an operator-approved Plan; only one Plan may be approved and current for a Story at a time, and rejected and superseded Plans keep their history. Two corrections were made on the way, both to the author's own first draft: a Story is an outcome, not a change, because a change names a mechanism; and what must change belongs to the Plan, not the Story, or the Story becomes a small Plan nobody read. Approving a Plan is not accepting the Story; the outcome is judged on evidence, afterwards. Records on the old store keep their `INIT` identifiers; history is not renamed, and the earlier entries below still say Initiative.
+
+Why this is expected to work better: to the people this method is for, Story already means the bounded, owned, accepted unit under a Feature, with the outcome sentence and the acceptance criteria they know. Its one piece of baggage — sprint sizing — is named and refused: a Story is as large as one decision to authorize, and is never estimated in points. A borrowed word with the opposite meaning cost every new reader an unlearning; a familiar word with one stated difference costs them a sentence.
 
 ### 17 September 2026 — The problem before the method, and the Plan as a contract.
 
@@ -373,6 +381,6 @@ The same rule applies to people: **anyone can propose a change, I decide, and th
 
 ---
 
-**Manifesto for Operator-Led Software Development** · version 1.0 · published 7 September 2026 · last revised 17 September 2026
+**Manifesto for Operator-Led Software Development** · version 1.0 · published 7 September 2026 · last revised 21 September 2026
 Proposed and authored by Raguvind Tharanitharan · [raguvind.com](https://raguvind.com). First written 19 August 2026.
 This document may be freely copied in any form, in whole or in part, with attribution to its author and this address. Licensed under [Creative Commons Attribution 4.0 (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
