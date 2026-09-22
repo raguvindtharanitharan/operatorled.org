@@ -528,7 +528,7 @@
     <div><i>01</i>Capture</div><div><i>02</i>Shape</div><div class="op"><i>03</i>Authorize<small>operator</small></div>
     <div><i>04</i>Execute</div><div><i>05</i>Prove</div><div class="op"><i>06</i>Accept<small>operator</small></div><div><i>07</i>Learn</div>
   </div>
-  <p class="loop-note">The loop is not strictly linear. A rejection returns work for correction with its history intact.</p>
+  <p class="loop-note">The loop is not strictly linear. A rejection returns work for correction with its history intact — in the record it then shows Needs Revision, not Backlog.</p>
   <dl class="states">
     <dt>1 · Capture</dt><dd>An idea, request, defect, or concern is recorded without pretending it is ready. Capture
     protects the thought from being lost; it does not authorize work.</dd>
@@ -547,7 +547,9 @@
     the authorized proposal, appropriate to the risk. A submitted result puts the record in <em>Awaiting Verdict</em>; the judgment that follows is the
     operator's alone.</dd>
     <dt>6 · Accept</dt><dd>The operator determines whether the evidence proves the authorized outcome. A rejection
-    states what evidence or outcome is missing and sends the work back without erasing its history.</dd>
+    states what evidence or outcome is missing and sends the work back without erasing its history. In the record the work
+    then shows <em>Needs Revision</em>, not Backlog: rejected work has been authorized, done and found wanting, and the state
+    says so.</dd>
     <dt>7 · Learn</dt><dd>Material surprises become durable knowledge: a decision, a new rule, a defect, a changed
     acceptance condition, or an improvement to this process. Learning is complete only when it can change future
     behaviour.</dd>
@@ -704,7 +706,7 @@
     <div><dt>Verdict</dt><dd>The operator's judgment on a submission: accept, reject, redirect, or stop, with a reason in the operator's own words.</dd></div>
     <div><dt>Decision</dt><dd>Any recorded operator act that changes direction, scope, authority, priority, or accepted risk. Append-only. The reason is part of the record.</dd></div>
     <div><dt>The loop</dt><dd>Capture → Shape → Authorize → Execute → Prove → Accept → Learn. Authorize and Accept are the operator's alone.</dd></div>
-    <div><dt>Backlog · In Progress · Awaiting Verdict</dt><dd>The three record states a work item shows: captured with nothing authorized; executing under a lease; submitted and awaiting the operator.</dd></div>
+    <div><dt>Backlog · In Progress · Awaiting Verdict · Needs Revision</dt><dd>The four record states a work item shows: captured with nothing authorized; executing under a lease; submitted and awaiting the operator; rejected and waiting for a new Plan.</dd></div>
     <div><dt>Feature · Story · Task · Bug</dt><dd>The structure of work, top to bottom — every item leading upward to the intent it serves. A Feature may also carry an optional Spec when design decisions need to survive across multiple Stories.</dd></div>
   </dl>
 </section>
@@ -734,6 +736,17 @@
   written while running two real projects: a small algorithmic trading firm called ATAM, and Ingee, the tool that
   implements the method. Every entry started as a problem somebody actually hit. The entries have not been cleaned up
   after the fact.</p>
+
+  <details class="amend"><summary><span class="d">21 September 2026</span><span class="t">A fourth record state, Needs Revision.</span></summary><div class="body">
+    <p>Observed problem: Backlog is defined as "captured, nothing authorized", and the lifecycle returned rejected work to
+    it. A Story that had consumed a Plan, a Lease and a verdict then read as if none of that had happened; the record hid
+    an authorization cycle and its investment behind the word for work never started.</p>
+    <p>What changes: a rejection derives <strong>Needs Revision</strong>, the record's fourth state beside Backlog, In
+    Progress and Awaiting Verdict. It holds until a new Plan is approved, when the work is In Progress again, or until a
+    later verdict stops or redirects it. It is derived from the newest verdict and the Plans after it, never stored.</p>
+    <p>Why this is expected to work better: the operator and the agent read what happened from the state alone, without
+    opening the history, and Backlog keeps its one meaning.</p>
+  </div></details>
 
   <details class="amend"><summary><span class="d">21 September 2026</span><span class="t">The Initiative is renamed the Story.</span></summary><div class="body">
     <p>Observed problem: in Jira and the portfolio tools this document's readers come from, an Initiative sits <em>above</em>
