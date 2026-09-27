@@ -14,7 +14,7 @@ Proposed and authored by **Raguvind Tharanitharan** · [raguvind.com](https://ra
 The term **Operator-Led Software Development** is coined in this document
 First written **19 August 2026**, while running two real projects
 Published **7 September 2026** · version 1.0
-Last revised **21 September 2026**
+Last revised **25 September 2026**
 
 [Read the incidents that produced this →](https://raguvind.com/writing/faster-than-you-can-follow)
 
@@ -60,13 +60,11 @@ The answer is not to watch every keystroke or make agents wait for permission at
 
 **Agentic tools determine what an agent *can* do. This method establishes what it *may* do, under whose authority, and what must be proven before the outcome is accepted.** It does not replace coding agents, issue trackers, or CI/CD; it is the operating model for using them when agents perform the work.
 
-**Two bets I am making**
+**The claim**
 
-**First:** most of the code that will exist in ten years has not been written yet, and most of it will not be written by hand. AI agents will produce software at a volume no human development process was designed to absorb.
+AI agents will produce and change software faster than people can reasonably inspect it. They will also make investigation, repair, and translation cheaper, increasing the volume of work that needs judgment.
 
-**Second:** much of the software written over the last fifty years will be rewritten, replaced, or retired in the same window, and AI will supply both the pressure and the means: it will find weaknesses in old code faster than people can patch them by hand, and it will make translating that code cheap.
-
-Both bets lead to the same place: code will arrive faster than humans can reasonably inspect it. [Security research](https://www.veracode.com/resources/analyst-reports/2025-genai-code-security-report/) has identified vulnerabilities in AI-generated code, reinforcing the need to verify changes before accepting them. Whoever is accountable for a codebase will need a way to decide which changes are accepted into it. That's what this is for.
+[Security research](https://www.veracode.com/resources/analyst-reports/2025-genai-code-security-report/) has identified vulnerabilities in AI-generated code, reinforcing the need to verify changes before acceptance. Whoever is accountable for a codebase needs a durable way to decide which outcomes enter it. That is what this method provides.
 
 ## 2 · What we value
 
@@ -84,9 +82,9 @@ The items on the right can be useful. They must not substitute for the items on 
 | **durable learning** | ceremonial compliance |
 | **a small process that is followed** | a complete process that is ignored |
 
-## 3 · Twelve principles
+## 3 · Thirteen principles
 
-Each one stands on its own. Each has its own anchor (`#p1` … `#p12`), so it can be quoted directly.
+Each one stands on its own. Each has its own anchor (`#p1` … `#p13`), so it can be quoted directly.
 
 <a id="p1"></a>
 ### p1 · The operator is in command.
@@ -149,6 +147,15 @@ Every field, status, meeting, and metric has to help someone authorize, execute,
 ### p12 · It governs how a system is built, not how it behaves once it is running.
 
 This method covers proposing, authorizing, executing, proving, and accepting. Its job ends when an outcome is accepted. What the finished system does in production is the business of that system's own controls, which have to work whether or not the build tooling is reachable. That is a boundary, not a gap. A method that also tried to govern every system it helped build would be an opinion about running a business bolted onto an opinion about building one.
+
+<a id="p13"></a>
+### p13 · The operator receives decisions, not transcripts.
+
+An agent may do a great deal of work. What reaches the operator is what they need to decide: what happened, what is unresolved, what is assumed, and what is being asked of them. Evidence is cited, not narrated. The full record remains addressable underneath and is never the default reading. When the operator asks to see under the hood, the agent shows it in full and without another summary. Brevity is the default, never a refusal: an operator looking at the work is exercising command, not wasting the agent's time.
+
+One exception is deliberate: **the artifact under decision is never summarised.** A Plan, a proposed outcome, or acceptance evidence is read in full when the operator is deciding on it. A summary can orient the decision; it cannot substitute for reviewing the thing being approved.
+
+This is not a courtesy. If deciding requires reconstructing what the agent did, the method has moved the cost rather than removed it, and the operator will stop reading — which is the same as not being in command.
 
 ## 4 · The loop: seven phases
 
@@ -236,7 +243,9 @@ Two rules go with it. **The contract freezes but the document lives**: approval 
 
 ### Two ledgers beside the work
 
-The work hierarchy records what is being done and why. Two append-only ledgers record what happened around it. The **activity ledger** holds every AI agent run against a work item: which agent acted, under which Plan, when it started and finished, how it ended, what it cost where the cost is known, and what evidence it produced (or why it produced none). The **decision ledger** holds every decision that changed direction, scope, authority, priority, or accepted risk, with the question, the options, the operator's choice and reason, and what it affected. The method requires these two records. How they are filled is an implementation matter: in the reference implementation, Ingee, the activity ledger also records the provider and model, and cost can be collected automatically only when an agent runs through an API that reports usage. An agent working in a terminal records its own runs, so the ledger holds what the agent reported, and a cost the provider did not report stays unknown rather than zero. That is why hiding cost or rework is on the short list of things an agent may never do.
+The work hierarchy records what is being done and why. Two append-only ledgers record what happened around it. The **activity ledger** records each agent activity: who acted, under which Plan, when it began and ended, how it ended, its known cost, and the evidence it produced—or why it produced none. The **decision ledger** records every decision that changed direction, scope, authority, priority, or accepted risk, together with the question, the options, the operator's choice and reason, and what it affected.
+
+The method requires these records, not a particular way of collecting them. A cost that is not known stays unknown rather than becoming zero. Failed attempts, rework, uncertainty, and cost remain visible because hiding them would make the record less truthful than the work.
 
 ### Two kinds of dependency
 
@@ -293,7 +302,31 @@ At any moment, the operator should be able to answer:
 
 This is a governing document, not scripture. A change must record the observed problem that prompted it, which principle or practice changes, why the replacement is expected to work better, and the date and operator decision. AI agents may propose amendments. They may not quietly change the operating model while implementing the tooling.
 
-> **The log below is this document's own history, with the project names left in.** It was written while running two real projects: a small algorithmic trading firm called ATAM, and Ingee, the tool that implements the method. Every entry started as a problem somebody actually hit. The entries have not been cleaned up after the fact.
+> **The log below is this document's own history, with the project names left in.** It was written while running two real projects: a small algorithmic trading firm and a software-development project that implements the method. Every entry started as a problem somebody actually hit. The entries have not been cleaned up after the fact.
+
+### 25 September 2026 — The ledgers describe the method, not the tooling.
+
+Observed problem: the ledger section mixed the method's recordkeeping requirements with collection details about providers, models, APIs, and terminal sessions. The reader had to separate the durable principle from one possible implementation.
+
+What changes: the section now defines the activity ledger and decision ledger in method terms. It keeps the requirement that unknown cost remains unknown and that failed attempts, rework, uncertainty, and cost stay visible. It removes the mechanics of how a particular system may collect those facts.
+
+Why this is expected to work better: the manifesto states what every implementation must preserve without prescribing its instrumentation. Date and decision: 25 September 2026, operator RT.
+
+### 25 September 2026 — One claim in place of two bets.
+
+Observed problem: the two future-facing bets made the same argument at greater length: agents will increase the volume of work that requires human judgment. Their speculative detail interrupted the transition from the problem to the method.
+
+What changes: the two bets become one claim. Agents will produce and change software faster than people can reasonably inspect it, while making investigation, repair, and translation cheaper. The supporting security citation and the conclusion remain: accountable people need a durable basis for deciding what is accepted. No principle, lifecycle phase, or operating responsibility changes.
+
+Why this is expected to work better: the reader reaches the method sooner without losing the premise that makes the method necessary. Date and decision: 25 September 2026, operator RT.
+
+### 25 September 2026 — The operator receives decisions, not transcripts.
+
+Observed problem: a process can preserve every action and still make the accountable person reconstruct the work from long agent reports. The record becomes another place to read rather than a means of exercising judgment. Principle 5 governs the language of a decision, but it did not govern the reports that fill the time between decisions.
+
+What changes: a thirteenth principle. Agent reports state what happened, what remains unresolved, what is assumed, and what the operator is being asked to decide. Evidence is cited rather than narrated. The complete record stays addressable underneath and is shown in full whenever the operator asks. The artifact being decided is the deliberate exception: a Plan, proposed outcome, or acceptance evidence is reviewed in full, not through a summary.
+
+Why this is expected to work better: compression saves the operator from reconstructing context without hiding the work. The operator can stay in command at normal speed, while retaining the ability to inspect every detail when judgment requires it. Date and decision: 25 September 2026, operator RT.
 
 ### 21 September 2026 — A fourth record state, Needs Revision.
 
@@ -389,6 +422,6 @@ The same rule applies to people: **anyone can propose a change, I decide, and th
 
 ---
 
-**Manifesto for Operator-Led Software Development** · version 1.0 · published 7 September 2026 · last revised 21 September 2026
+**Manifesto for Operator-Led Software Development** · version 1.0 · published 7 September 2026 · last revised 25 September 2026
 Proposed and authored by Raguvind Tharanitharan · [raguvind.com](https://raguvind.com). First written 19 August 2026.
 This document may be freely copied in any form, in whole or in part, with attribution to its author and this address. Licensed under [Creative Commons Attribution 4.0 (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).

@@ -44,7 +44,7 @@ files.
 
 - The definition, and why the method exists: what changed in how software is built, and what broke.
 - Nine values, each stated as a preference between two useful things.
-- Twelve principles, each with its own permalink (`#p1` … `#p12`) so it can be quoted directly.
+- Thirteen principles, each with its own permalink (`#p1` … `#p13`) so it can be quoted directly.
 - The loop: seven states work moves through, two of which belong to the operator alone.
 - The operating model, the structure of work, the anatomy of a proposal, and the practices the method
   deliberately rejects.

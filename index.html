@@ -340,7 +340,7 @@
     <span>The term <b>Operator-Led Software Development</b> is coined in this document</span>
     <span>First written <b>19 August 2026</b>, while running two real projects</span>
     <span>Published <b>7 September 2026</b> · version 1.0</span>
-    <span>Last revised <b>21 September 2026</b></span>
+    <span>Last revised <b>25 September 2026</b></span>
   </div>
   <p class="story"><a href="https://raguvind.com/writing/faster-than-you-can-follow">Read the incidents that produced this →</a></p>
 </header>
@@ -401,17 +401,13 @@
   under whose authority, and what must be proven before the outcome is accepted.</strong> It does not replace coding
   agents, issue trackers, or CI/CD; it is the operating model for using them when agents perform the work.</p>
   <div class="bets">
-    <span class="k">Two bets I am making</span>
-    <p><strong>First:</strong> most of the code that will exist in ten years has not been written yet, and most of it
-    will not be written by hand. AI agents will produce software at a volume no human development process was designed
-    to absorb.</p>
-    <p><strong>Second:</strong> much of the software written over the last fifty years will be rewritten, replaced, or
-    retired in the same window, and AI will supply both the pressure and the means: it will find weaknesses in old code
-    faster than people can patch them by hand, and it will make translating that code cheap.</p>
-    <p>Both bets lead to the same place: code will arrive faster than humans can reasonably inspect it.
-    <a href="https://www.veracode.com/resources/analyst-reports/2025-genai-code-security-report/">Security research</a> has
-    identified vulnerabilities in AI-generated code, reinforcing the need to verify changes before accepting them. Whoever is
-    accountable for a codebase will need a way to decide which changes are accepted into it. That's what this is for.</p>
+    <span class="k">The claim</span>
+    <p>AI agents will produce and change software faster than people can reasonably inspect it. They will also make
+    investigation, repair, and translation cheaper, increasing the volume of work that needs judgment.</p>
+    <p><a href="https://www.veracode.com/resources/analyst-reports/2025-genai-code-security-report/">Security research</a>
+    has identified vulnerabilities in AI-generated code, reinforcing the need to verify changes before acceptance.
+    Whoever is accountable for a codebase needs a durable way to decide which outcomes enter it. That is what this
+    method provides.</p>
   </div>
 </section>
 
@@ -432,7 +428,7 @@
 </section>
 
 <section id="principles">
-  <h2>Twelve principles</h2>
+  <h2>Thirteen principles</h2>
   <p class="lede">Each one stands on its own. The ¶ links give every principle its own address, so it can be quoted
   directly.</p>
   <ol class="principles">
@@ -517,6 +513,18 @@
       to work whether or not the build tooling is reachable. That is a boundary, not a gap. A method that also tried to
       govern every system it helped build would be an opinion about running a business bolted onto an opinion about
       building one.</p></li>
+    <li class="principle" id="p13"><a class="anchor" href="#p13" title="Copy link to this principle">&#182; p13</a>
+      <h3>The operator receives decisions, not transcripts.</h3>
+      <p>An agent may do a great deal of work. What reaches the operator is what they need to decide: what happened,
+      what is unresolved, what is assumed, and what is being asked of them. Evidence is cited, not narrated. The full
+      record remains addressable underneath and is never the default reading. When the operator asks to see under the
+      hood, the agent shows it in full and without another summary. Brevity is the default, never a refusal: an
+      operator looking at the work is exercising command, not wasting the agent's time.</p>
+      <p>One exception is deliberate: <strong>the artifact under decision is never summarised.</strong> A Plan, a
+      proposed outcome, or acceptance evidence is read in full when the operator is deciding on it. A summary can
+      orient the decision; it cannot substitute for reviewing the thing being approved.</p>
+      <p>This is not a courtesy. If deciding requires reconstructing what the agent did, the method has moved the cost
+      rather than removed it, and the operator will stop reading &mdash; which is the same as not being in command.</p></li>
   </ol>
 </section>
 
@@ -650,16 +658,13 @@
 
   <h3>Two ledgers beside the work</h3>
   <p>The work hierarchy records what is being done and why. Two append-only ledgers record what happened around it.
-  The <strong>activity ledger</strong> holds every AI agent run against a work item: which agent acted, under which
-  Plan, when it started and finished, how it ended, what it cost where the cost is known, and what evidence it produced
-  (or why it produced none). The <strong>decision ledger</strong> holds every decision that changed direction, scope,
-  authority, priority, or accepted risk, with the question, the options, the operator's choice and reason, and what it
-  affected. The method requires these two records. How they are filled is an implementation matter: in the reference
-  implementation, Ingee, the activity ledger also records the provider and model, and cost can be collected
-  automatically only when an agent runs through an API that reports usage. An agent working in a terminal records its
-  own runs, so the ledger holds what the agent reported, and a cost the provider did not report stays unknown rather
-  than zero. That is why hiding cost or rework is on the short list of things an agent may never do.</p>
-
+  The <strong>activity ledger</strong> records each agent activity: who acted, under which Plan, when it began and
+  ended, how it ended, its known cost, and the evidence it produced&mdash;or why it produced none. The
+  <strong>decision ledger</strong> records every decision that changed direction, scope, authority, priority, or
+  accepted risk, together with the question, the options, the operator's choice and reason, and what it affected.</p>
+  <p>The method requires these records, not a particular way of collecting them. A cost that is not known stays
+  unknown rather than becoming zero. Failed attempts, rework, uncertainty, and cost remain visible because hiding
+  them would make the record less truthful than the work.</p>
   <h3>Two kinds of dependency</h3>
   <p>One work item has at most one executing owner unless collaboration is explicitly authorized. Several agents may
   investigate or review the same item, but their activities stay separately visible. And two kinds of dependency must
@@ -733,9 +738,47 @@
   decision. AI agents may propose amendments. They may not quietly change the operating model while implementing the
   tooling.</p>
   <p class="note"><strong>The log below is this document's own history, with the project names left in.</strong> It was
-  written while running two real projects: a small algorithmic trading firm called ATAM, and Ingee, the tool that
+  written while running two real projects: a small algorithmic trading firm and a software-development project that
   implements the method. Every entry started as a problem somebody actually hit. The entries have not been cleaned up
   after the fact.</p>
+
+  <details class="amend"><summary><span class="d">25 September 2026</span><span class="t">The ledgers describe the method, not the tooling.</span></summary><div class="body">
+    <p>Observed problem: the ledger section mixed the method's recordkeeping requirements with collection details about
+    providers, models, APIs, and terminal sessions. The reader had to separate the durable principle from one possible
+    implementation.</p>
+    <p>What changes: the section now defines the activity ledger and decision ledger in method terms. It keeps the
+    requirement that unknown cost remains unknown and that failed attempts, rework, uncertainty, and cost stay visible.
+    It removes the mechanics of how a particular system may collect those facts.</p>
+    <p>Why this is expected to work better: the manifesto states what every implementation must preserve without
+    prescribing its instrumentation. Date and decision: 25 September 2026, operator RT.</p>
+  </div></details>
+
+  <details class="amend"><summary><span class="d">25 September 2026</span><span class="t">One claim in place of two bets.</span></summary><div class="body">
+    <p>Observed problem: the two future-facing bets made the same argument at greater length: agents will increase the
+    volume of work that requires human judgment. Their speculative detail interrupted the transition from the problem to
+    the method.</p>
+    <p>What changes: the two bets become one claim. Agents will produce and change software faster than people can
+    reasonably inspect it, while making investigation, repair, and translation cheaper. The supporting security citation
+    and the conclusion remain: accountable people need a durable basis for deciding what is accepted. No principle,
+    lifecycle phase, or operating responsibility changes.</p>
+    <p>Why this is expected to work better: the reader reaches the method sooner without losing the premise that makes
+    the method necessary. Date and decision: 25 September 2026, operator RT.</p>
+  </div></details>
+
+  <details class="amend"><summary><span class="d">25 September 2026</span><span class="t">The operator receives decisions, not transcripts.</span></summary><div class="body">
+    <p>Observed problem: a process can preserve every action and still make the accountable person reconstruct the
+    work from long agent reports. The record becomes another place to read rather than a means of exercising judgment.
+    Principle 5 governs the language of a decision, but it did not govern the reports that fill the time between
+    decisions.</p>
+    <p>What changes: a thirteenth principle. Agent reports state what happened, what remains unresolved, what is
+    assumed, and what the operator is being asked to decide. Evidence is cited rather than narrated. The complete
+    record stays addressable underneath and is shown in full whenever the operator asks. The artifact being decided is
+    the deliberate exception: a Plan, proposed outcome, or acceptance evidence is reviewed in full, not through a
+    summary.</p>
+    <p>Why this is expected to work better: compression saves the operator from reconstructing context without hiding
+    the work. The operator can stay in command at normal speed, while retaining the ability to inspect every detail
+    when judgment requires it. Date and decision: 25 September 2026, operator RT.</p>
+  </div></details>
 
   <details class="amend"><summary><span class="d">21 September 2026</span><span class="t">A fourth record state, Needs Revision.</span></summary><div class="body">
     <p>Observed problem: Backlog is defined as "captured, nothing authorized", and the lifecycle returned rejected work to
@@ -950,7 +993,7 @@
 </main>
 
 <footer><div class="wrap">
-  <p><strong class="serif" style="color:var(--ink)">Manifesto for Operator-Led Software Development</strong> · version 1.0 · published 7 September 2026 · last revised 21 September 2026</p>
+  <p><strong class="serif" style="color:var(--ink)">Manifesto for Operator-Led Software Development</strong> · version 1.0 · published 7 September 2026 · last revised 25 September 2026</p>
   <p>Proposed and authored by Raguvind Tharanitharan · <a href="https://raguvind.com">raguvind.com</a>. First written 19 August 2026.</p>
   <p>This document may be freely copied in any form, in whole or in part, with attribution to its author and this address.
   Licensed under <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">Creative Commons Attribution 4.0 (CC BY 4.0)</a>.</p>
